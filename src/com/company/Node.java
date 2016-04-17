@@ -1,5 +1,9 @@
 package com.company;
 
+/**
+ * Created by Edgar Perez on 17/04/2016.
+ */
+
 public class Node {
 
 		public enum TipusNode {
