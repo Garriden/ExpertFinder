@@ -96,7 +96,7 @@ public class Graf {
     }
 
     // Node Origen sempre es paper, perque les matrius son Paper x [Autor,Conferencia,Terme]
-    public boolean afegir_aresta(Node nodeOrigen, Node nodeDesti) {
+    public int afegir_aresta(Node nodeOrigen, Node nodeDesti) {
         switch (nodeDesti.get_tipus_node()) {
             case AUTOR:
                 this.paperAutor.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
@@ -108,9 +108,9 @@ public class Graf {
                 this.paperTerme.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
                 break;
             default:
-                return false;
+                return -1;
         }
-        return true;
+        return 0;
     }
 
     public int eliminar_node(Node node) {
@@ -144,54 +144,38 @@ public class Graf {
     public int actualizar_node(Node node) {
         switch (node.get_tipus_node()) {
             case AUTOR:
-                this.autor.remove(i);
-                this.autor.add(node);
+                this.autor.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case PAPER:
-                this.paper.remove(i);
-                this.paper.add(node);
+                this.paper.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case TERME:
-                this.terme.remove(i);
-                this.terme.add(node);
+                this.terme.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case CONFERENCIA:
-                this.conferencia.remove(i);
-                this.conferencia.add(node);
+                this.conferencia.get(node.get_id()).set_nom(node.get_nom());
                 break;
+            default:
+                return -1;
         }
-        return 1;
-        return -1;
+        return 0;
     }
 
-
-
-
-    public int eliminar_aresta(Node node1, Node node2)
-    {
-        int i = node1.get_id();
-        int j = node2.get_id();
-        if (i >= 0 && j >= 0) {
-            Node.TipusNode Tn1 = node1.get_tipus_node();
-            Node.TipusNode Tn2 = node2.get_tipus_node();
-            if (Tn1 == PAPER || Tn2 == PAPER) {
-                if (Tn1 == AUTOR || Tn2 == AUTOR) {
-                    this.paperAutor.get_data()[i][j] = -1;
-                    this.paperAutor.get_data()[j][i] = -1;
-                }
-                else if (Tn1 == TERME || Tn2 == TERME) {
-                    this.paperTerme.get_data()[i][j] = -1;
-                    this.paperTerme.get_data()[j][i] = -1;
-                }
-                else if (Tn1 == CONFERENCIA || Tn2 == CONFERENCIA) {
-                    this.paperConferencia.get_data()[i][j] = -1;
-                    this.paperConferencia.get_data()[j][i] = -1;
-                }
-            }
-
-            return 1;
+    public int eliminar_aresta(Node nodeOrigen, Node nodeDesti) {
+        switch (nodeDesti.get_tipus_node()) {
+            case AUTOR:
+                this.paperAutor.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
+                break;
+            case CONFERENCIA:
+                this.paperConferencia.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
+                break;
+            case TERME:
+                this.paperTerme.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
+                break;
+            default:
+                return -1;
         }
-        else return 0;
+        return 0;
     }
 
     public Matriu get_paper_autor() {

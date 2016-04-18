@@ -26,8 +26,12 @@ public class ControladorPresentacio {
         return controladorDomini.afegir_node(tipusNode, nom);
     }
 
-    public boolean afegir_relacio(Node.TipusNode tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
+    public int afegir_aresta(Node.TipusNode tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
         return controladorDomini.afegir_aresta(tipusNodeDesti, idNodeOrigen, idNodeDesti);
+    }
+
+    public int eliminar_aresta(Node.TipusNode tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
+        return controladorDomini.eliminar_aresta(tipusNodeDesti, idNodeOrigen, idNodeDesti);
     }
 
     public int eliminar_node(Node.TipusNode tipusNode, int idNode) {

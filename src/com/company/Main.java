@@ -220,6 +220,24 @@ public class Main {
         imprimir_matrices();
         imprimir_nodos();
 
+        System.out.println("EDITAR NODO");
+        controladorPresentacio.modificar_node(Node.TipusNode.PAPER, 1, "MATRICES");
+
+        imprimir_matrices();
+        imprimir_nodos();
+
+        System.out.println("AÑADIR UNA ARISTA");
+        controladorPresentacio.afegir_aresta(Node.TipusNode.AUTOR, 1, 1);
+
+        imprimir_matrices();
+        imprimir_nodos();
+
+        System.out.println("ELIMINAR una ARESTA");
+        controladorPresentacio.eliminar_aresta(Node.TipusNode.AUTOR, 1, 1);
+
+        imprimir_matrices();
+        imprimir_nodos();
+
         System.out.println("BORRAR NODO: ");
         controladorPresentacio.eliminar_node(Node.TipusNode.PAPER, 1);
 
