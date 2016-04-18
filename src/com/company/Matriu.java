@@ -190,6 +190,26 @@ public class Matriu {
         }
     }
 
+    // Pre:  La matriu implícita té que estar inicialitzada, 0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
+    // Post: La matriu implicita té un nou valor en la fila i columna pasades per paràmetre.
+    // Cost: O(1).
+    public void set_valor(int columna, int fila, double valor) {
+        this.data[fila][columna] = valor;
+    }
+
+    // Pre:  La matriu implícita té que estar inicialitzada.
+    // Post: Retorna el nombre de files que té la matriu implícita.
+    // Cost: O(1).
+    public int get_nombre_files() {
+        return this.data.length;
+    }
+
+    // Pre:  La matriu implícita té que estar inicialitzada.
+    // Post: Retorna el nombre de columnes que té la matriu implícita.
+    // Cost: O(1).
+    public int get_nombre_columnes() {
+        return  this.data[0].length;
+    }
 
     // Pre:  La matriu implícita té que estar inicialitzada, 0 <= fila < Matriu.fila
     // Post: Retorna una Matriu C coma resultat de obtenir la fila i-èssima
@@ -202,6 +222,40 @@ public class Matriu {
         }
 
         return m;
+    }
+
+    // Pre:  La matriu implícita té que estar inicialitzada, 0 <= fila < Matriu.fila; El numero de files de la matriu
+    //       almenys es 2.
+    // Post: S'ha eliminat de la matriu implícita la fila pasada com a paràmetre.
+    // Cost: O(n²).
+    public void eliminar_fila(int fila) {
+        double[][] novaData = new double[this.data.length - 1][this.data[0].length];
+        for (int i = 0; i < fila; i++) {
+            for (int j = 0; j < this.data[0].length; j++) {
+                novaData[i][j] = this.data[i][j];
+            }
+        }
+
+        for (int i = fila; i < this.data.length - 1; i++) {
+            for (int j = 0; j < this.data[0].length; j++) {
+                novaData[i][j] = this.data[i+1][j];
+            }
+        }
+        this.data = novaData;
+    }
+
+    // Pre:  La matriu implícita té que estar inicialitzada.
+    // Post: S'ha afegit a la matriu implícita una fila on tots els seus valors són 0. Aquesta nova fila és la nova
+    //       última fila de la matriu. El numero de files de la matriu és Matriu.files + 1.
+    // Cost: O(n²).
+    public void afegir_fila() {
+        double[][] novaData = new double[this.data.length + 1][this.data[0].length];
+        for (int i = 0; i < this.data.length; ++i) {
+            for (int j = 0; j < this.data[0].length; ++j) {
+                novaData[i][j] = this.data[i][j];
+            }
+        }
+        this.data = novaData;
     }
 
     // Pre:  La matriu implícita té que estar inicialitzada, 0 <= columna < Matriu.columna

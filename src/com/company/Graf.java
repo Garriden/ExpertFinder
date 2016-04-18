@@ -2,6 +2,8 @@ package com.company;
 
 import java.util.ArrayList;
 
+import static com.company.Node.TipusNode.*;
+
 /**
  * Created by Marc Garrido on 17/04/2016.
  */
@@ -31,22 +33,36 @@ public class Graf {
     }
 
 
-    public int afegir_node(Node node)
+    // Falta pre,post,coste
+    public int afegir_node(Node.TipusNode tipusNode, String nomNode)
     {
-        Node.TipusNode tipusNode = node.get_tipus_node();
         switch (tipusNode) {
             case AUTOR:
-                if(!(this.autor.contains(node))) this.autor.add(node);
-                break;
+                this.autor.add(new Node(this.autor.size(), nomNode, tipusNode));
+                return 0;
             case PAPER:
-                if(!(this.paper.contains(node))) this.paper.add(node);
-                break;
+                this.paper.add(new Node(this.paper.size(), nomNode, tipusNode));
+                return 0;
             case TERME:
-                if(!(this.terme.contains(node))) this.terme.add(node);
-                break;
+                this.terme.add(new Node(this.terme.size(), nomNode, tipusNode));
+                return 0;
             case CONFERENCIA:
-                if(!(this.conferencia.contains(node))) this.conferencia.add(node);
-                break;
+                this.conferencia.add(new Node(this.conferencia.size(), nomNode, tipusNode));
+                return 0;
+        }
+        return -1;
+    }
+
+    public int eliminar_node(Node node) {
+        switch (node.get_tipus_node()) {
+            case AUTOR:
+                if (this.autor.remove(node.get_id()) != null) return 0;
+            case PAPER:
+                if (this.paper.remove(node.get_id()) != null) return 0;
+            case TERME:
+                if (this.terme.remove(node.get_id()) != null) return 0;
+            case CONFERENCIA:
+                if (this.conferencia.remove(node.get_id()) != null) return 0;
         }
         return -1;
     }
@@ -58,16 +74,16 @@ public class Graf {
         if (i >= 0 && j >= 0) {
             Node.TipusNode Tn1 = node1.get_tipus_node();
             Node.TipusNode Tn2 = node2.get_tipus_node();
-            if (Tn1 == Node.TipusNode.PAPER || Tn2 == Node.TipusNode.PAPER) {
-                if (Tn1 == Node.TipusNode.AUTOR || Tn2 == Node.TipusNode.AUTOR) {
+            if (Tn1 == PAPER || Tn2 == PAPER) {
+                if (Tn1 == AUTOR || Tn2 == AUTOR) {
                     this.paperAutor.get_data()[i][j] = 1;
                     this.paperAutor.get_data()[j][i] = 1;
                 }
-                else if (Tn1 == Node.TipusNode.TERME || Tn2 == Node.TipusNode.TERME) {
+                else if (Tn1 == TERME || Tn2 == TERME) {
                     this.paperTerme.get_data()[i][j] = 1;
                     this.paperTerme.get_data()[j][i] = 1;
                 }
-                else if (Tn1 == Node.TipusNode.CONFERENCIA || Tn2 == Node.TipusNode.CONFERENCIA) {
+                else if (Tn1 == CONFERENCIA || Tn2 == CONFERENCIA) {
                     this.paperConferencia.get_data()[i][j] = 1;
                     this.paperConferencia.get_data()[j][i] = 1;
                 }
@@ -78,29 +94,7 @@ public class Graf {
         else return 0;
     }
 
-    public int eliminar_node(Node node)
-    {
-        int i = node.get_id();
-        if (i >= 0) {
-            Node.TipusNode Tn = node.get_tipus_node();
-            switch (Tn) {
-                case AUTOR:
-                    if(this.autor.contains(node)) this.autor.remove(node);
-                    break;
-                case PAPER:
-                    if(this.paper.contains(node)) this.paper.remove(node);
-                    break;
-                case TERME:
-                    if(this.terme.contains(node)) this.terme.remove(node);
-                    break;
-                case CONFERENCIA:
-                    if(this.conferencia.contains(node)) this.conferencia.remove(node);
-                    break;
-            }
-            return 1;
-        }
-        else return -1;
-    }
+
 
 
     public int eliminar_aresta(Node node1, Node node2)
@@ -110,16 +104,16 @@ public class Graf {
         if (i >= 0 && j >= 0) {
             Node.TipusNode Tn1 = node1.get_tipus_node();
             Node.TipusNode Tn2 = node2.get_tipus_node();
-            if (Tn1 == Node.TipusNode.PAPER || Tn2 == Node.TipusNode.PAPER) {
-                if (Tn1 == Node.TipusNode.AUTOR || Tn2 == Node.TipusNode.AUTOR) {
+            if (Tn1 == PAPER || Tn2 == PAPER) {
+                if (Tn1 == AUTOR || Tn2 == AUTOR) {
                     this.paperAutor.get_data()[i][j] = -1;
                     this.paperAutor.get_data()[j][i] = -1;
                 }
-                else if (Tn1 == Node.TipusNode.TERME || Tn2 == Node.TipusNode.TERME) {
+                else if (Tn1 == TERME || Tn2 == TERME) {
                     this.paperTerme.get_data()[i][j] = -1;
                     this.paperTerme.get_data()[j][i] = -1;
                 }
-                else if (Tn1 == Node.TipusNode.CONFERENCIA || Tn2 == Node.TipusNode.CONFERENCIA) {
+                else if (Tn1 == CONFERENCIA || Tn2 == CONFERENCIA) {
                     this.paperConferencia.get_data()[i][j] = -1;
                     this.paperConferencia.get_data()[j][i] = -1;
                 }
@@ -158,39 +152,32 @@ public class Graf {
         else return 0;
     }
 
-    public Matriu get_paper_autor()
-    {
+    public Matriu get_paper_autor() {
         return this.paperAutor;
     }
 
-    public Matriu get_paper_conferencia()
-    {
+    public Matriu get_paper_conferencia() {
         return this.paperConferencia;
     }
 
-    public Matriu get_paper_terme()
-    {
+    public Matriu get_paper_terme() {
         return this.paperTerme;
     }
 
-    public ArrayList<Node> get_paper()
-    {
+    public ArrayList<Node> get_paper() {
         return this.paper;
     }
 
-    public ArrayList<Node> get_conferencia()
-    {
+    public ArrayList<Node> get_conferencia() {
         return this.conferencia;
     }
 
 
-    public ArrayList<Node> get_autor()
-    {
+    public ArrayList<Node> get_autor() {
         return this.autor;
     }
 
-    public ArrayList<Node> get_terme()
-    {
+    public ArrayList<Node> get_terme() {
         return this.terme;
     }
 

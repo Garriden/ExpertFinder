@@ -13,8 +13,7 @@ public class Node {
 		private TipusNode tipus;
 		private String nom;
 		private int idNode;
-		
-		
+
 		public Node(int id, String nom, TipusNode tipus){
 			idNode = id;
 			this.nom = nom;
