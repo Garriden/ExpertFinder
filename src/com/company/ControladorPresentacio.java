@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 
 public class ControladorPresentacio {
-    private ControladorDomini controladorDomini;
+    public ControladorDomini controladorDomini;
 
     private NodePresentacio descodificar_node(String nodeCodificat) {
         NodePresentacio node = new NodePresentacio();
@@ -16,6 +16,22 @@ public class ControladorPresentacio {
         node.id = Integer.parseInt(nodeCodificat.substring(0, i));
         node.nom = nodeCodificat.substring(i+1, nodeCodificat.length());
         return node;
+    }
+
+    public ControladorPresentacio() {
+        controladorDomini = new ControladorDomini();
+    }
+
+    public boolean afegir_node(Node.TipusNode tipusNode, String nom) {
+        return controladorDomini.afegir_node(tipusNode, nom);
+    }
+
+    public boolean afegir_relacio(Node.TipusNode tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
+        return controladorDomini.afegir_aresta(tipusNodeDesti, idNodeOrigen, idNodeDesti);
+    }
+
+    public int eliminar_node(Node.TipusNode tipusNode, int idNode) {
+        return controladorDomini.eliminar_node(tipusNode, idNode);
     }
 
     public Node.TipusNode string_to_tipus_node(String tipusNode) {
@@ -28,12 +44,8 @@ public class ControladorPresentacio {
         }
     }
 
-    public ControladorPresentacio() {
-        controladorDomini = new ControladorDomini();
-    }
-
-    public int afegir_node(Node.TipusNode tipusNode, String nom) {
-        return controladorDomini.afegir_node(tipusNode, nom);
+    public int modificar_node(Node.TipusNode tipusNode, int idNode, String nouNom) {
+        return controladorDomini.modificar_node(tipusNode, idNode, nouNom);
     }
 
     public ArrayList<NodePresentacio> get_llista_nodes(Node.TipusNode tipusNode) {

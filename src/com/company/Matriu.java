@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.ArrayList;
+
 /**
  * Created by Ruben Bagan Benavides on 11/04/2016.
  */
@@ -225,7 +227,7 @@ public class Matriu {
     }
 
     // Pre:  La matriu implícita té que estar inicialitzada, 0 <= fila < Matriu.fila; El numero de files de la matriu
-    //       almenys es 2.
+    //       >= 2.
     // Post: S'ha eliminat de la matriu implícita la fila pasada com a paràmetre.
     // Cost: O(n²).
     public void eliminar_fila(int fila) {
@@ -244,12 +246,44 @@ public class Matriu {
         this.data = novaData;
     }
 
+    // Pre:  La matriu implícita té que estar inicialitzada, 0 <= columna < Matriu.fila; El numero de columnes de la matriu
+    //       >= 2.
+    // Post: S'ha eliminat de la matriu implícita la fila pasada com a paràmetre.
+    // Cost: O(n²).
+    public void eliminar_columna(int columna) {
+        double[][] novaData = new double[this.data.length][this.data[0].length - 1];
+        for (int i = 0; i < this.data.length; i++) {
+            for (int j = 0; j < columna; j++) {
+                novaData[i][j] = this.data[i][j];
+            }
+            for (int j = columna; j < this.data[0].length - 1; j++) {
+                novaData[i][j] = this.data[i][j+1];
+            }
+        }
+
+        this.data = novaData;
+    }
+
     // Pre:  La matriu implícita té que estar inicialitzada.
-    // Post: S'ha afegit a la matriu implícita una fila on tots els seus valors són 0. Aquesta nova fila és la nova
+    // Post: S'ha afegit a la matriu implícita una fila on tots els seus valors són 0. Aquesta nova fila és la
     //       última fila de la matriu. El numero de files de la matriu és Matriu.files + 1.
     // Cost: O(n²).
     public void afegir_fila() {
         double[][] novaData = new double[this.data.length + 1][this.data[0].length];
+        for (int i = 0; i < this.data.length; ++i) {
+            for (int j = 0; j < this.data[0].length; ++j) {
+                novaData[i][j] = this.data[i][j];
+            }
+        }
+        this.data = novaData;
+    }
+
+    // Pre:  La matriu implícita té que estar inicialitzada.
+    // Post: S'ha afegit a la matriu implícita una columna on tots els seus valors són 0. Aquesta nova columna és la
+    //       última columna de la matriu. El numero de columnes de la matriu és Matriu.columnes + 1.
+    // Cost: O(n²).
+    public void afegir_columna() {
+        double[][] novaData = new double[this.data.length][this.data[0].length + 1];
         for (int i = 0; i < this.data.length; ++i) {
             for (int j = 0; j < this.data[0].length; ++j) {
                 novaData[i][j] = this.data[i][j];

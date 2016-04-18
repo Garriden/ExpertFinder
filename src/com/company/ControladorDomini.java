@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 
 public class ControladorDomini {
-    private Graf graf;
+    public Graf graf;
 
     private String codificar_node(int idNode, String nomNode) {
         return (idNode + "|" + nomNode);
@@ -17,14 +17,28 @@ public class ControladorDomini {
         graf = new Graf();
     }
 
-    public int afegir_node(Node.TipusNode tipusNode, String nomNode) {
+    public boolean afegir_node(Node.TipusNode tipusNode, String nomNode) {
         return graf.afegir_node(tipusNode, nomNode);
     }
 
-    public String get_node_iessim(int i, Node.TipusNode tipusNode) {
-        Node node = graf.get_node(1, tipusNode);
+    public boolean afegir_aresta(Node.TipusNode tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
+        return graf.afegir_aresta(graf.get_node(idNodeOrigen, Node.TipusNode.PAPER), graf.get_node(idNodeDesti, tipusNodeDesti));
+    }
+
+    public String get_node_iessim(Node.TipusNode tipusNode, int idNode) {
+        Node node = graf.get_node(idNode, tipusNode);
         if (node == null) return null;
         return codificar_node(node.get_id(), node.get_nom());
+    }
+
+    public int eliminar_node(Node.TipusNode tipusNode, int idNode) {
+        return graf.eliminar_node(graf.get_node(idNode, tipusNode));
+    }
+
+    public int modificar_node(Node.TipusNode tipusNode, int idNode, String nouNom) {
+        Node node = graf.get_node(idNode, tipusNode);
+        node.set_nom(nouNom);
+        return graf.actualizar_node(node);
     }
 
     public ArrayList<String> get_llista_nodes(Node.TipusNode tipusNode) {
