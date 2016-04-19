@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import static com.company.Node.TipusNode.*;
 
 /**
- * Created by Marc Garrido on 17/04/2016.
+ * Created by Marc Garrido on 17/04/2016. Col·laboracio Ruben Bagan Benavides
  */
 
 public class Graf {
@@ -21,22 +21,14 @@ public class Graf {
 
     public Graf()
     {
-        paperAutor = new Matriu(1,1);
-        paperConferencia = new Matriu(1,1);
-        paperTerme = new Matriu(1,1);
-
+        paperAutor = new Matriu();
+        paperConferencia = new Matriu();
+        paperTerme = new Matriu();
 
         paper = new ArrayList<Node>();
         conferencia = new ArrayList<Node>();
         autor = new ArrayList<Node>();
         terme = new ArrayList<Node>();
-
-        Node dummy = new Node(0, "DUMMY_NODE", AUTOR);
-        paper.add(dummy);
-        conferencia.add(dummy);
-        autor.add(dummy);
-        terme.add(dummy);
-
     }
 
     // Falta pre,post,coste
@@ -118,6 +110,9 @@ public class Graf {
             case AUTOR:
                 if (this.autor.remove(node.get_id()) != null) {
                     this.paperAutor.eliminar_columna(node.get_id());
+                    for (int i = node.get_id(); i < autor.size(); ++i) {
+                        autor.get(i).set_id(i);
+                    }
                     return 0;
                 }
             case PAPER:
@@ -125,16 +120,25 @@ public class Graf {
                     this.paperAutor.eliminar_fila(node.get_id());
                     this.paperTerme.eliminar_fila(node.get_id());
                     this.paperConferencia.eliminar_fila(node.get_id());
+                    for (int i = node.get_id(); i < paper.size(); ++i) {
+                        paper.get(i).set_id(i);
+                    }
                     return 0;
                 }
             case TERME:
                 if (this.terme.remove(node.get_id()) != null) {
                     this.paperTerme.eliminar_columna(node.get_id());
+                    for (int i = node.get_id(); i < terme.size(); ++i) {
+                        terme.get(i).set_id(i);
+                    }
                     return 0;
                 }
             case CONFERENCIA:
                 if (this.conferencia.remove(node.get_id()) != null) {
                     this.paperConferencia.eliminar_columna(node.get_id());
+                    for (int i = node.get_id(); i < conferencia.size(); ++i) {
+                        conferencia.get(i).set_id(i);
+                    }
                     return 0;
                 }
         }
@@ -205,6 +209,34 @@ public class Graf {
 
     public ArrayList<Node> get_terme() {
         return this.terme;
+    }
+
+    public void set_paper_autor(double[][] matriuAdjecencia) {
+        paperAutor.set_data(matriuAdjecencia);
+    }
+
+    public void set_paper_terme(double[][] matriuAdjecencia) {
+        paperTerme.set_data(matriuAdjecencia);
+    }
+
+    public void set_paper_conferencia(double[][] matriuAdjecencia) {
+        paperConferencia.set_data(matriuAdjecencia);
+    }
+
+    public void set_autor(ArrayList<Node> autor) {
+        this.autor = autor;
+    }
+
+    public void set_paper(ArrayList<Node> paper) {
+        this.paper = paper;
+    }
+
+    public void set_terme(ArrayList<Node> terme) {
+        this.terme = terme;
+    }
+
+    public void set_conferencia(ArrayList<Node> conferencia) {
+        this.conferencia = conferencia;
     }
 
     public Node get_node(int i, Node.TipusNode tipus)

@@ -12,16 +12,16 @@ public class Node {
 		
 		private TipusNode tipus;
 		private String nom;
-		private int idNode;
+		private int id;
 
 		public Node(int id, String nom, TipusNode tipus){
-			idNode = id;
+			this.id = id;
 			this.nom = nom;
 			this.tipus = tipus;
 		}
 
 		public int get_id(){
-			return idNode;
+			return id;
 		}
 
 		public String get_nom(){
@@ -35,5 +35,8 @@ public class Node {
 		public void set_nom(String nom){
 			this.nom = nom;
 		}
-		
+
+		public void set_id(int id) {
+			this.id = id;
+		}
 }
