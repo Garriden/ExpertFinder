@@ -25,15 +25,14 @@ public class Graf {
         paperConferencia = new Matriu();
         paperTerme = new Matriu();
 
-        paper = new ArrayList<Node>();
-        conferencia = new ArrayList<Node>();
-        autor = new ArrayList<Node>();
-        terme = new ArrayList<Node>();
+        paper = new ArrayList<>();
+        conferencia = new ArrayList<>();
+        autor = new ArrayList<>();
+        terme = new ArrayList<>();
     }
 
     // Falta pre,post,coste
-    public boolean afegir_node(Node.TipusNode tipusNode, String nomNode)
-    {
+    public int afegir_node(Node.TipusNode tipusNode, String nomNode) {
         int id = 0;
         switch (tipusNode){
             case AUTOR:
@@ -49,18 +48,18 @@ public class Graf {
                 id = this.paper.size();
                 break;
             default:
-                return false;
+                return -1;
         }
         return afegir_node(new Node(id, nomNode, tipusNode));
     }
 
-    public boolean afegir_node(Node node)
+    public int afegir_node(Node node)
     {
         switch (node.get_tipus_node()) {
             case AUTOR:
                 if (this.autor.add(node)) {
                     this.paperAutor.afegir_columna();
-                    return true;
+                    return 0;
                 }
                 break;
             case PAPER:
@@ -68,23 +67,23 @@ public class Graf {
                     this.paperAutor.afegir_fila();
                     this.paperTerme.afegir_fila();
                     this.paperConferencia.afegir_fila();
-                    return true;
+                    return 0;
                 }
                 break;
             case TERME:
                 if (this.terme.add(node)) {
                     paperTerme.afegir_columna();
-                    return true;
+                    return 0;
                 }
                 break;
             case CONFERENCIA:
                 if (this.conferencia.add(node)) {
                     this.paperConferencia.afegir_columna();
-                    return true;
+                    return 0;
                 }
                 break;
         }
-        return false;
+        return -1;
     }
 
     // Node Origen sempre es paper, perque les matrius son Paper x [Autor,Conferencia,Terme]

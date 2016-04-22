@@ -10,34 +10,6 @@ import java.util.Scanner;
 public class ControladorPresentacio {
     public ControladorDomini controladorDomini;
 
-    private NodePresentacio descodificar_node(String nodeCodificat) {
-        NodePresentacio node = new NodePresentacio();
-        int i  = nodeCodificat.indexOf('|');
-        node.id = Integer.parseInt(nodeCodificat.substring(0, i));
-        node.nom = nodeCodificat.substring(i+1, nodeCodificat.length());
-        return node;
-    }
-
-    public ControladorPresentacio() {
-        controladorDomini = new ControladorDomini();
-    }
-
-    public boolean afegir_node(Node.TipusNode tipusNode, String nom) {
-        return controladorDomini.afegir_node(tipusNode, nom);
-    }
-
-    public int afegir_aresta(Node.TipusNode tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
-        return controladorDomini.afegir_aresta(tipusNodeDesti, idNodeOrigen, idNodeDesti);
-    }
-
-    public int eliminar_aresta(Node.TipusNode tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
-        return controladorDomini.eliminar_aresta(tipusNodeDesti, idNodeOrigen, idNodeDesti);
-    }
-
-    public int eliminar_node(Node.TipusNode tipusNode, int idNode) {
-        return controladorDomini.eliminar_node(tipusNode, idNode);
-    }
-
     public Node.TipusNode string_to_tipus_node(String tipusNode) {
         switch (tipusNode) {
             case "AUTOR": return Node.TipusNode.AUTOR;
@@ -48,20 +20,56 @@ public class ControladorPresentacio {
         }
     }
 
-    public int modificar_node(Node.TipusNode tipusNode, int idNode, String nouNom) {
-        return controladorDomini.modificar_node(tipusNode, idNode, nouNom);
+    public ControladorPresentacio() {
+        controladorDomini = new ControladorDomini();
     }
 
-    public ArrayList<NodePresentacio> get_llista_nodes(Node.TipusNode tipusNode) {
-        ArrayList<String> llistaNodesCodificats = controladorDomini.get_llista_nodes(tipusNode);
-        if  (llistaNodesCodificats == null) return null;
-
-        ArrayList<NodePresentacio> llista_nodes = new ArrayList<NodePresentacio>();
-        for (String s : llistaNodesCodificats) {
-            llista_nodes.add(descodificar_node(s));
-        }
-
-        return llista_nodes;
+    public int afegir_node(String tipusNode, String nom) {
+        if (tipusNode == null || nom == null) return -2;
+        Node.TipusNode tipus = string_to_tipus_node(tipusNode);
+        if (tipus == null) return -3;
+        return controladorDomini.afegir_node(tipus, nom);
     }
+
+    public int eliminar_node(String tipusNode, int idNode) {
+        if (tipusNode == null) return -2;
+        if (idNode < 0) return -4;
+        Node.TipusNode tipus = string_to_tipus_node(tipusNode);
+        if (tipus == null) return -3;
+        return controladorDomini.eliminar_node(tipus, idNode);
+    }
+
+    public int modificar_node(String tipusNode, int idNode, String nouNom) {
+        if (tipusNode == null || nouNom == null) return -2;
+        if (idNode < 0) return -4;
+        Node.TipusNode tipus = string_to_tipus_node(tipusNode);
+        if (tipus == null) return -3;
+        return controladorDomini.modificar_node(tipus, idNode, nouNom);
+    }
+
+    public String[] get_llista_nodes(String tipusNode) {
+        if (tipusNode == null) return null;
+        Node.TipusNode tipus = string_to_tipus_node(tipusNode);
+        if (tipus == null) return null;
+        return controladorDomini.get_llista_nodes(tipus);
+    }
+
+    public int afegir_aresta(String tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
+        if (tipusNodeDesti == null) return -2;
+        if (idNodeOrigen < 0 || idNodeOrigen < 0) return -4;
+        Node.TipusNode tipus = string_to_tipus_node(tipusNodeDesti);
+        if (tipus == null) return -3;
+        return controladorDomini.afegir_aresta(tipus, idNodeOrigen, idNodeDesti);
+    }
+
+    public int eliminar_aresta(String tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
+        if (tipusNodeDesti == null) return -2;
+        if (idNodeOrigen < 0 || idNodeOrigen < 0) return -4;
+        Node.TipusNode tipus = string_to_tipus_node(tipusNodeDesti);
+        if (tipus == null) return -3;
+        return controladorDomini.eliminar_aresta(tipus, idNodeOrigen, idNodeDesti);
+    }
+
+
 
 }

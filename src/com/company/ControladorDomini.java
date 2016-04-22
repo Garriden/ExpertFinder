@@ -17,7 +17,7 @@ public class ControladorDomini {
         graf = new Graf();
     }
 
-    public boolean afegir_node(Node.TipusNode tipusNode, String nomNode) {
+    public int afegir_node(Node.TipusNode tipusNode, String nomNode) {
         return graf.afegir_node(tipusNode, nomNode);
     }
 
@@ -37,21 +37,20 @@ public class ControladorDomini {
         return graf.actualizar_node(new Node(idNode, nouNom, tipusNode));
     }
 
-    public ArrayList<String> get_llista_nodes(Node.TipusNode tipusNode) {
+    public String[] get_llista_nodes(Node.TipusNode tipusNode) {
         ArrayList<Node> llistaNodes;
         switch (tipusNode) {
-            case AUTOR: llistaNodes = graf.get_autor(); break;
+            case AUTOR: llistaNodes = graf.get_autor();             break;
+            case TERME: llistaNodes = graf.get_terme();             break;
+            case PAPER: llistaNodes = graf.get_paper();             break;
             case CONFERENCIA: llistaNodes = graf.get_conferencia(); break;
-            case TERME: llistaNodes = graf.get_terme(); break;
-            case PAPER: llistaNodes = graf.get_paper(); break;
             default: return null;
         }
-        if (llistaNodes == null) return null;
-        ArrayList<String> llistaNodesCodificada = new ArrayList<String>();
-        for (Node n : llistaNodes) {
-            llistaNodesCodificada.add(codificar_node(n.get_id(), n.get_nom()));
+        String[] nodes = new String[llistaNodes.size()];
+        for (int i = 0; i < llistaNodes.size(); ++i) {
+            nodes[i] = llistaNodes.get(i).get_nom();
         }
-        return llistaNodesCodificada;
+        return nodes;
     }
 
 
