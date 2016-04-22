@@ -8,13 +8,19 @@ import java.util.ArrayList;
 
 public class ControladorDomini {
     public Graf graf;
+    private ControladorCami controladorCami;
 
     private String codificar_node(int idNode, String nomNode) {
         return (idNode + "|" + nomNode);
     }
 
+    private String codificar_cami(Cami c) {
+        return (c.get_descripcio() + "|" + c.get_cami());
+    }
+
     public ControladorDomini() {
         graf = new Graf();
+        controladorCami = new ControladorCami();
     }
 
     public int afegir_node(Node.TipusNode tipusNode, String nomNode) {
@@ -51,6 +57,31 @@ public class ControladorDomini {
             nodes[i] = llistaNodes.get(i).get_nom();
         }
         return nodes;
+    }
+
+    public String get_cami(String descripcio) throws ControlError {
+        Cami c = controladorCami.get_cami(descripcio);
+        return codificar_cami(c);
+    }
+
+    public String[] get_camins() {
+        ArrayList<Cami> camins = controladorCami.get_camins();
+        String[] caminsCodificats = new String[camins.size()];
+        for (int i = 0; i < camins.size(); ++i) {
+            caminsCodificats[i] = codificar_cami(camins.get(i));
+        }
+        return caminsCodificats;
+    }
+
+    public void afegir_cami(String cami, String descripcio) throws ControlError {
+        if (Cami.cami_valid(cami)) {
+            controladorCami.afegir_cami(new Cami(cami, descripcio));
+        }
+        else throw new ControlError(TaulaErrors.CAMI_NO_VALID);
+    }
+
+    public void eliminar_cami(String descripcio) throws ControlError {
+        controladorCami.eliminar_cami(descripcio);
     }
 
 

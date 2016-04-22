@@ -11,7 +11,7 @@ public class ControladorPresentacio {
     public ControladorDomini controladorDomini;
 
     public Node.TipusNode string_to_tipus_node(String tipusNode) {
-        switch (tipusNode) {
+        switch (tipusNode.toUpperCase()) {
             case "AUTOR": return Node.TipusNode.AUTOR;
             case "TERME": return Node.TipusNode.TERME;
             case "PAPER": return Node.TipusNode.PAPER;
@@ -20,15 +20,21 @@ public class ControladorPresentacio {
         }
     }
 
+    private CamiPresentacio descodificar_cami(String cami) {
+        String c = cami.substring(0, cami.indexOf('|'));
+        String descripcio = cami.substring(cami.indexOf('|')+1, cami.length());
+        return new CamiPresentacio(c, descripcio);
+    }
+
     public ControladorPresentacio() {
         controladorDomini = new ControladorDomini();
     }
 
-    public int afegir_node(String tipusNode, String nom) {
-        if (tipusNode == null || nom == null) return -2;
+    public void afegir_node(String tipusNode, String nom) throws ControlError {
+        if (tipusNode == null || nom == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
         Node.TipusNode tipus = string_to_tipus_node(tipusNode);
-        if (tipus == null) return -3;
-        return controladorDomini.afegir_node(tipus, nom);
+        if (tipus == null) throw new ControlError(TaulaErrors.NOM_NODE_INVALID);
+        controladorDomini.afegir_node(tipus, nom);
     }
 
     public int eliminar_node(String tipusNode, int idNode) {
@@ -68,6 +74,32 @@ public class ControladorPresentacio {
         Node.TipusNode tipus = string_to_tipus_node(tipusNodeDesti);
         if (tipus == null) return -3;
         return controladorDomini.eliminar_aresta(tipus, idNodeOrigen, idNodeDesti);
+    }
+
+    public CamiPresentacio get_cami(String descripcio) throws ControlError {
+        if (descripcio == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        String s = controladorDomini.get_cami(descripcio);
+        return descodificar_cami(s);
+    }
+
+    public ArrayList<CamiPresentacio> get_camins() {
+        String[] caminsCodificats = controladorDomini.get_camins();
+        ArrayList<CamiPresentacio> camins = new ArrayList<>(caminsCodificats.length);
+        for (int i = 0; i < caminsCodificats.length; ++i) {
+            camins.add(descodificar_cami(caminsCodificats[i]));
+        }
+
+        return camins;
+    }
+
+    public void afegir_cami(String cami, String descripcio) throws ControlError {
+        if (descripcio == null || descripcio == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        controladorDomini.afegir_cami(cami, descripcio);
+    }
+
+    public void eliminar_cami(String descripcio) throws ControlError {
+        if (descripcio == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        controladorDomini.eliminar_cami(descripcio);
     }
 
 
