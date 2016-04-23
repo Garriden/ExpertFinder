@@ -105,7 +105,7 @@ public class Cami {
         return cami.length();
     }
     
-    public static boolean cami_valid(String cami){
+    public boolean cami_valid(String cami){
     	char[] aux = cami.toCharArray();
     	for(int i=0; i < cami.length()-1; i++){
     		if(aux[i]!='P' && aux[i]!='C' && aux[i]!='A' &&  aux[i]!='T') return false;

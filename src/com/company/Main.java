@@ -2,6 +2,7 @@ package com.company;
 
 // Autor: Ruben Bagan Benavides 20/04/2016
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -330,9 +331,8 @@ public class Main {
         }
     }
 
-    public static void afegir_cami() {
-        scan.nextLine();
-        System.out.println("Introdueix els diferents nodes que formen el cami <Autor,Paper,Terme,Conferencia>, escriu FI per finalitzar: ");
+    public static String crear_cami() {
+        System.out.println("Introdueix els diferents nodes que formaran el nou cami <Autor,Paper,Terme,Conferencia>, escriu FI per finalitzar: ");
         String node = scan.nextLine();
         String cami = "";
         while (!node.equalsIgnoreCase("FI")) {
@@ -353,17 +353,90 @@ public class Main {
             }
             node = scan.nextLine();
         }
-        System.out.println("Introdueix una descripcio per aquest cami: ");
-        String descripcio = scan.nextLine();
-        try {
-            controladorPresentacio.afegir_cami(cami, descripcio);
-        } catch (ControlError controlError) {
-            tractar_error(controlError);
+        return cami;
+    }
+
+    public static void afegir_cami() {
+        scan.nextLine();
+        String cami = crear_cami();
+        if (!cami.equals("")) {
+            System.out.println("Introdueix una descripcio per aquest cami: ");
+            String descripcio = scan.nextLine();
+            try {
+                controladorPresentacio.afegir_cami(cami, descripcio);
+            } catch (ControlError controlError) {
+                tractar_error(controlError);
+            }
         }
     }
 
     public static void consultar_cami() {
-
+        int opcio = 1;
+        while (opcio != 0) {
+            ArrayList<CamiPresentacio> camins = controladorPresentacio.get_camins();
+            if (camins.size() > 0 ) {
+                System.out.println("Camins disponibles: " + camins.size());
+                for (int i = 0; i < camins.size(); ++i) {
+                    System.out.println(i + 1 + " - Descripcio: " + camins.get(i).descripcio + " Cami: " + camins.get(i).cami);
+                }
+                System.out.println("=============================");
+                System.out.println("1\t Modificar cami");
+                System.out.println("2\t Eliminar cami");
+                System.out.println("0\t Sortir");
+                System.out.println("Escriu una opcio: ");
+                opcio = llegir_enter(0, 2);
+                switch (opcio) {
+                    case 1:
+                        System.out.println("Introdueix l'identificador del cami que vols eliminar: ");
+                        int id = llegir_enter(1, camins.size());
+                        --id;
+                        System.out.println("1\t Modificar el cami");
+                        System.out.println("2\t Modificar la descripcio");
+                        System.out.println("0\t Sortir");
+                        System.out.println("Escriu una opcio: ");
+                        opcio = llegir_enter(0, 2);
+                        switch (opcio) {
+                            case 1:
+                                scan.nextLine();
+                                String cami = crear_cami();
+                                try {
+                                    controladorPresentacio.modificar_cami(camins.get(id).descripcio, cami);
+                                    System.out.println("S'ha modificat correctament");
+                                } catch (ControlError controlError) {
+                                    tractar_error(controlError);
+                                }
+                                break;
+                            case 2:
+                                scan.nextLine();
+                                System.out.println("Escriu la nova descripcio: ");
+                                String novaDescripcio = scan.nextLine();
+                                try {
+                                    controladorPresentacio.modificar_descripcio_cami(camins.get(id).descripcio, novaDescripcio);
+                                    System.out.println("S'ha modificat correctament");
+                                } catch (ControlError controlError) {
+                                    tractar_error(controlError);
+                                }
+                                break;
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Introdueix l'identificador del cami que vols eliminar: ");
+                        id = llegir_enter(1, camins.size());
+                        --id;
+                        try {
+                            controladorPresentacio.eliminar_cami(camins.get(id).descripcio);
+                            System.out.println("S'ha eliminat el cami.");
+                        } catch (ControlError controlError) {
+                            tractar_error(controlError);
+                        }
+                        break;
+                }
+            }
+            else {
+                System.out.println("No hi ha camins.");
+                opcio = 0;
+            }
+        }
     }
 
     public static void gestionar_cami() {
@@ -386,35 +459,9 @@ public class Main {
 
     }
 
-    public static void inicializar_grafo() {
-        try {
-            print_debug();
-        } catch (ControlError controlError) {
-            tractar_error(controlError);
-        }
-        System.out.println();
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         controladorPresentacio = new ControladorPresentacio();
 
-        MatriuDriver md = new MatriuDriver();
-        md.run();
-
-       /* Matriu a = new Matriu(2,2);
-        Matriu b = new Matriu(2,2);
-
-        a.set_valor(0,0, 1);
-        print_matriu(a);
-
-        b = a.copia_profunditat();
-        b.set_valor(0,0, 2);
-        print_matriu(a);
-        print_matriu(b);
-    */
-        /*
-        inicializar_grafo();
         int opcio = menu();
         while (opcio != 0) {
             switch (opcio) {
@@ -437,113 +484,6 @@ public class Main {
                     break;
             }
             opcio = menu();
-        }*/
-
-        /*
-        controladorPresentacio.afegir_node(Node.TipusNode.AUTOR, "JOHN");
-        controladorPresentacio.afegir_node(Node.TipusNode.CONFERENCIA, "MATH KDD");
-        controladorPresentacio.afegir_node(Node.TipusNode.TERME, "OF");
-        controladorPresentacio.afegir_node(Node.TipusNode.PAPER, "ALGEBRA");
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-        System.out.println("EDITAR NODO");
-        controladorPresentacio.modificar_node(Node.TipusNode.PAPER, 1, "MATRICES");
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-        System.out.println("AÑADIR UNA ARISTA");
-        controladorPresentacio.afegir_aresta(Node.TipusNode.AUTOR, 1, 1);
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-        System.out.println("ELIMINAR una ARESTA");
-        controladorPresentacio.eliminar_aresta(Node.TipusNode.AUTOR, 1, 1);
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-        System.out.println("BORRAR NODO: ");
-        controladorPresentacio.eliminar_node(Node.TipusNode.PAPER, 1);
-
-        imprimir_matrices();
-        imprimir_nodos();
-        */
-
-        /*
-        double[][] data = {{1,0,0},{0,1,0}};
-        Matriu m = new Matriu();
-        m.set_data(data);
-
-        ArrayList<Node> paper = new ArrayList<>();
-        paper.add(new Node(0, "Papeles1", Node.TipusNode.PAPER));
-        paper.add(new Node(1, "Papeles2", Node.TipusNode.PAPER));
-
-        ArrayList<Node> autor = new ArrayList<>();
-        autor.add(new Node(0, "Autor1", Node.TipusNode.AUTOR));
-        autor.add(new Node(1, "Autor2", Node.TipusNode.AUTOR));
-        autor.add(new Node(2, "Autor3", Node.TipusNode.AUTOR));
-
-
-        ArrayList<Node> terme = new ArrayList<>();
-        terme.add(new Node(0, "Term1", Node.TipusNode.TERME));
-        terme.add(new Node(1, "Term2", Node.TipusNode.TERME));
-        terme.add(new Node(2, "Term3", Node.TipusNode.TERME));
-
-        ArrayList<Node> conferencia = new ArrayList<>();
-        conferencia.add(new Node(0, "Conf1", Node.TipusNode.CONFERENCIA));
-        conferencia.add(new Node(1, "Conf2", Node.TipusNode.CONFERENCIA));
-        conferencia.add(new Node(2, "Conf3", Node.TipusNode.CONFERENCIA));
-
-        controladorPresentacio.controladorDomini.graf.set_paper_autor(data);
-        controladorPresentacio.controladorDomini.graf.set_paper_terme(data);
-        controladorPresentacio.controladorDomini.graf.set_paper_conferencia(data);
-        controladorPresentacio.controladorDomini.graf.set_paper(paper);
-        controladorPresentacio.controladorDomini.graf.set_autor(autor);
-        controladorPresentacio.controladorDomini.graf.set_conferencia(conferencia);
-        controladorPresentacio.controladorDomini.graf.set_terme(terme);
-
-
-        imprimir_matrices();
-        imprimir_nodos();
-        System.out.println();
-        System.out.println();
-
-        controladorPresentacio.afegir_node(Node.TipusNode.AUTOR, "JOHN");
-        controladorPresentacio.afegir_node(Node.TipusNode.CONFERENCIA, "MATH KDD");
-        controladorPresentacio.afegir_node(Node.TipusNode.TERME, "OF");
-        controladorPresentacio.afegir_node(Node.TipusNode.PAPER, "ALGEBRA");
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-        System.out.println("EDITAR NODO");
-        controladorPresentacio.modificar_node(Node.TipusNode.PAPER, 1, "MATRICES");
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-        System.out.println("AÑADIR UNA ARISTA");
-        controladorPresentacio.afegir_aresta(Node.TipusNode.AUTOR, 1, 1);
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-        System.out.println("ELIMINAR una ARESTA");
-        controladorPresentacio.eliminar_aresta(Node.TipusNode.AUTOR, 1, 1);
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-        System.out.println("BORRAR NODO: ");
-        controladorPresentacio.eliminar_node(Node.TipusNode.PAPER, 1);
-
-        imprimir_matrices();
-        imprimir_nodos();
-
-    */
+        }
     }
 }

@@ -15,7 +15,7 @@ public class ControladorDomini {
     }
 
     private String codificar_cami(Cami c) {
-        return (c.get_descripcio() + "|" + c.get_cami());
+        return (c.get_cami() + "|" + c.get_descripcio());
     }
 
     public ControladorDomini() {
@@ -98,14 +98,27 @@ public class ControladorDomini {
     }
 
     public void afegir_cami(String cami, String descripcio) throws ControlError {
-        if (Cami.cami_valid(cami)) {
-            controladorCami.afegir_cami(new Cami(cami, descripcio));
+        Cami c = new Cami(cami, descripcio);
+        if (c.cami_valid(cami)) {
+            controladorCami.afegir_cami(c);
         }
         else throw new ControlError(TaulaErrors.CAMI_NO_VALID);
     }
 
     public void eliminar_cami(String descripcio) throws ControlError {
         controladorCami.eliminar_cami(descripcio);
+    }
+
+    public void modificar_descripcio_cami(String descripcio, String novaDescripcio) throws ControlError {
+        controladorCami.modificar_descripcio(descripcio, novaDescripcio);
+    }
+
+    public void modificar_cami(String descripcio, String cami) throws ControlError {
+        Cami c = new Cami(cami, descripcio);
+        if (c.cami_valid(cami)) {
+            controladorCami.modificar_cami(descripcio, cami);
+        }
+        else throw new ControlError(TaulaErrors.CAMI_NO_VALID);
     }
 
 

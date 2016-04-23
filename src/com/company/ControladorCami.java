@@ -33,11 +33,19 @@ public class ControladorCami {
         if (!this.camins.contains(c)) {
             this.camins.add(c);
         }
-        throw new ControlError(CAMI_DUPLICATE);
+        else throw new ControlError(CAMI_DUPLICATE);
     }
 
     public void eliminar_cami(String descripcio) throws ControlError {
         Cami c = get_cami(descripcio);
         this.camins.remove(c);
+    }
+
+    public void modificar_descripcio(String descripcio, String novaDescripcio) throws ControlError {
+        get_cami(descripcio).set_descripcio(novaDescripcio);
+    }
+
+    public void modificar_cami(String descripcio, String cami) throws ControlError {
+        get_cami(descripcio).set_cami(cami);
     }
 }

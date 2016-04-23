@@ -102,6 +102,15 @@ public class ControladorPresentacio {
         controladorDomini.eliminar_cami(descripcio);
     }
 
+    public void modificar_descripcio_cami(String descripcio, String novaDescripcio) throws ControlError {
+        if (descripcio == null || novaDescripcio == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        controladorDomini.modificar_descripcio_cami(descripcio, novaDescripcio);
+    }
+
+    public void modificar_cami(String descripcio, String cami) throws ControlError {
+        if (descripcio == null || cami == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        controladorDomini.modificar_cami(descripcio, cami);
+    }
 
 
 }
