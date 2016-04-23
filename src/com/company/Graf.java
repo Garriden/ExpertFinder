@@ -1,9 +1,6 @@
 package com.company;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import static com.company.Node.TipusNode.*;
 
 /**
  * Created by Marc Garrido on 17/04/2016. Col·laboracio Ruben Bagan Benavides
@@ -53,7 +50,15 @@ public class Graf {
         this.terme = terme;
     }
 
+    /*
+    Errors:
+    -1 = arg nul
+    -2 = el node que es vol afegir ja existeix.
+    -3 = el tipus node no existeix
+     */
+
     public int afegir_node(Node.TipusNode tipusNode, String nomNode) {
+        if (tipusNode == null || nomNode == null) return -1;
         switch (tipusNode) {
             case AUTOR:
                 int id = this.autor.size();
@@ -85,29 +90,55 @@ public class Graf {
                     return 0;
                 }
                 break;
+            default:
+                return -3;
         }
-        return -1;
+        return -2;
     }
+
+    // Errors:
+    //
+    /*
+    -1 = arg null;
+    -2 = id negatiu
+    -3 = id >= tamany del vector
+    -4 = tipus node incorrecte
+    -5 = nodeOrigen no es de tipus paper
+     */
 
     // Node Origen sempre es paper, perque les matrius son Paper x [Autor,Conferencia,Terme]
     public int afegir_aresta(Node nodeOrigen, Node nodeDesti) {
+        if (nodeOrigen == null || nodeDesti == null) return -1;
+        if (nodeOrigen.get_id() < 0 || nodeDesti.get_id() < 0) return -2;
+        if (nodeOrigen.get_tipus_node() != Node.TipusNode.PAPER) return -5;
         switch (nodeDesti.get_tipus_node()) {
             case AUTOR:
+                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.autor.size()) return -3;
                 this.paperAutor.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
                 break;
             case CONFERENCIA:
+                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.conferencia.size()) return -3;
                 this.paperConferencia.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
                 break;
             case TERME:
+                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.terme.size()) return -3;
                 this.paperTerme.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 1.0);
                 break;
             default:
-                return -1;
+                return -4;
         }
         return 0;
     }
 
+    // Errors:
+    /*
+    -1 = arg null;
+    -2 = no hay ningun nodo con esa id ni tipo.
+    -3 = tipus node incorrecte
+
+     */
     public int eliminar_node(Node node) {
+        if (node == null) return -1;
         switch (node.get_tipus_node()) {
             case AUTOR:
                 if (this.autor.remove(node.get_id()) != null) {
@@ -117,6 +148,7 @@ public class Graf {
                     }
                     return 0;
                 }
+                return -2;
             case PAPER:
                 if (this.paper.remove(node.get_id()) != null) {
                     this.paperAutor.eliminar_fila(node.get_id());
@@ -127,6 +159,7 @@ public class Graf {
                     }
                     return 0;
                 }
+                return -2;
             case TERME:
                 if (this.terme.remove(node.get_id()) != null) {
                     this.paperTerme.eliminar_columna(node.get_id());
@@ -135,6 +168,7 @@ public class Graf {
                     }
                     return 0;
                 }
+                return -2;
             case CONFERENCIA:
                 if (this.conferencia.remove(node.get_id()) != null) {
                     this.paperConferencia.eliminar_columna(node.get_id());
@@ -143,44 +177,75 @@ public class Graf {
                     }
                     return 0;
                 }
+                return -2;
         }
-        return -1;
+        return -3;
     }
 
+    // Errors:
+    /*
+    -1 = arg null;
+    -2 = id negatiu
+    -3 = id >= tamany del vector
+    -4 = tipus node incorrecte
+     */
     public int actualizar_node(Node node) {
+        if (node == null) return -1;
+        if (node.get_id() < 0) return -2;
         switch (node.get_tipus_node()) {
             case AUTOR:
+                if (node.get_id() >= this.autor.size()) return -3;
                 this.autor.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case PAPER:
+                if (node.get_id() >= this.paper.size()) return -3;
                 this.paper.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case TERME:
+                if (node.get_id() >= this.terme.size()) return -3;
                 this.terme.get(node.get_id()).set_nom(node.get_nom());
                 break;
             case CONFERENCIA:
+                if (node.get_id() >= this.conferencia.size()) return -3;
                 this.conferencia.get(node.get_id()).set_nom(node.get_nom());
                 break;
             default:
-                return -1;
+                return -4;
         }
         return 0;
     }
 
+    // PRE: Node origen siempre tiene que ser paper
+    // Errors:
+    //
+    /*
+    -1 = arg null;
+    -2 = id negatiu
+    -3 = id >= tamany del vector
+    -4 = tipus node incorrecte
+    -5 = nodeOrigen no es de tipus paper
+     */
     public int eliminar_aresta(Node nodeOrigen, Node nodeDesti) {
+        if (nodeOrigen == null || nodeDesti == null) return -1;
+        if (nodeOrigen.get_id() < 0 || nodeDesti.get_id() < 0) return -2;
+        if (nodeOrigen.get_tipus_node() != Node.TipusNode.PAPER) return -5;
         switch (nodeDesti.get_tipus_node()) {
             case AUTOR:
+                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.autor.size()) return -3;
                 this.paperAutor.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
                 break;
             case CONFERENCIA:
+                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.conferencia.size()) return -3;
                 this.paperConferencia.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
                 break;
             case TERME:
+                if (nodeOrigen.get_id() >= this.paper.size() || nodeDesti.get_id() >= this.terme.size()) return -3;
                 this.paperTerme.set_valor(nodeOrigen.get_id(), nodeDesti.get_id(), 0.0);
                 break;
             default:
-                return -1;
+                return -4;
         }
+
         return 0;
     }
 
@@ -229,8 +294,4 @@ public class Graf {
     }
 
 
-
-    public void set_paper_autor(double[][] matriuAdjecencia) {
-        paperAutor.set_data(matriuAdjecencia);
-    }
 }

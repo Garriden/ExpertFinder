@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Ruben Bagan Benavides on 11/04/2016.
@@ -225,18 +226,26 @@ public class MatriuDriver {
     }
 
     private void demo() {
-        System.out.println("Creo una matriu anomenada A de 8 x 8: ");
-        Matriu a = new Matriu(8,8);
+        System.out.println("Creo una matriu anomenada A de 4 x 7: ");
+        Matriu a = new Matriu(4,7);
         print_matriu(a);
-        System.out.println("Inicialitzare la fila 4 amb valor 1");
-        double[] dades_fila_iessima = {1,1,1,1,1,1,1,1};
-        a.set_fila_iessima(3, dades_fila_iessima);
+        System.out.println("Inicialitzare la fila 3");
+        double[] dades_fila_iessima = {1,2,6,1,0,3,4};
+        a.set_fila_iessima(2, dades_fila_iessima);
         print_matriu(a);
-        System.out.println("Inicialitzare la columna 4 amb valor 1");
-        a.set_columna_iessima(3, dades_fila_iessima);
+        System.out.println("Inicialitzare la columna 3");
+        double[] dades_columna_iessima = {5,8.1,4,3.1};
+        a.set_columna_iessima(2, dades_columna_iessima);
         print_matriu(a);
-        System.out.println("Inicialitzare la posicio 0,0 amb valor 5");
-        a.set_valor(0,0, 5);
+        System.out.println("Inicialitzare tota una matriu: ");
+        for (int i = 0; i < a.get_nombre_files(); ++i) {
+            for (int j = 0; j < a.get_nombre_columnes(); ++j) {
+                a.set_valor(i,j, ((i-j+4*2+(i+j)-5)+ ThreadLocalRandom.current().nextDouble(2.0,10.0)));
+            }
+        }
+        print_matriu(a);
+        System.out.println("Inicialitzare la posicio 0,0 amb valor 500");
+        a.set_valor(0,0, 500.0);
         print_matriu(a);
         System.out.println("Escriu la fila 2");
         print_matriu(a.get_fila_iessima(1));
@@ -267,12 +276,21 @@ public class MatriuDriver {
         print_matriu(a.sumar(b));
         System.out.println("Resta A - B");
         print_matriu(a.restar(b));
+        System.out.println("Declarem una nova matriu B");
+        b = new Matriu(5,2);
+        System.out.println("Inicialitzare tota una matriu: ");
+        for (int i = 0; i < b.get_nombre_files(); ++i) {
+            for (int j = 0; j < b.get_nombre_columnes(); ++j) {
+                b.set_valor(i,j, ((i-j+4*2+(i+j)-5)+ ThreadLocalRandom.current().nextDouble(2.0,10.0)));
+            }
+        }
+        print_matriu(b);
         System.out.println("Multiplica A * B");
         print_matriu(a.multiplicar(b));
         System.out.println("Elimina la ultima columna");
         a.eliminar_columna(a.get_nombre_columnes() - 1);
         print_matriu(a);
-        System.out.println("Transapoa la matriu A");
+        System.out.println("Transposa la matriu A");
         print_matriu(a.transposar());
         System.out.println("Normalitza la matriu A per files");
         print_matriu(a.normalitzar_fila());

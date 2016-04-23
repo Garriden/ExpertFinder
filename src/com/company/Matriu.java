@@ -2,6 +2,8 @@ package com.company;
 
 // Created by Ruben Bagan Benavides on 11/04/2016.
 
+import java.util.Arrays;
+
 public class Matriu {
     private double[][] data;
 
@@ -16,14 +18,19 @@ public class Matriu {
     // Post: Retorna una referència a les dades de la matriu.
     // Cost: O(1)
     public double[][] get_data() {
-        return data;
+        return this.data;
     }
 
     // Pre:  Cert.
-    // Post: La matriu implicita apunta amb una referència a la matriu de dades.
-    // Cost: O(1).
+    // Post: La matriu implicita conté una copia de les dades pasades per paràmetre.
+    // Cost: O(n^2).
     public void set_data(double[][] data) {
-        this.data = data;
+        this.data = new double[data.length][data[0].length];
+        for (int i = 0; i < data.length; ++i) {
+            for (int j = 0; j < data[0].length; ++j) {
+                this.data[i][j] = data[i][j];
+            }
+        }
     }
 
     // Pre:  0 <= fila < Matriu.fila; data != NULL. La longitud de data té que ser igual al numero de columnes de la
@@ -183,7 +190,7 @@ public class Matriu {
         Matriu c = new Matriu(this.data.length, b.data[0].length);
         for (int i = 0; i < this.data.length; i++) {
             for (int j = 0; j < b.data[0].length; j++) {
-                for (int k = 0; k < b.data.length; k++) {
+                for (int k = 0; k < this.data[0].length; k++) {
                     c.data[i][j] += this.data[i][k] * b.data[k][j];
                 }
             }
@@ -231,16 +238,30 @@ public class Matriu {
     public Matriu normalitzar_columna() {
         Matriu m = new Matriu(this.data.length, this.data[0].length);
         for (int i = 0; i < this.data[0].length; i++) {
-            double norma = 0;
-            for (double[] aData : this.data) {
-                norma += Math.pow(aData[i], 2);
+            double norma = 0.0;
+            for (int j = 0; j < this.data.length; ++j) {
+                norma += Math.pow(this.data[j][i], 2);
             }
             norma = Math.sqrt(norma);
-            for (int j = 0; j < this.data[0].length; j++) {
+            for (int j = 0; j < this.data.length; j++) {
                 m.data[j][i] = this.data[j][i] / norma;
             }
         }
 
         return m;
+    }
+
+    // Pre:  Cert.
+    // Post: Retorna una copia de la matriu implícita, amb les mateixes dades i dimensions.
+    // Cost: O(n^2);
+    public Matriu copia_profunditat() {
+        Matriu copia = new Matriu(this.data.length, this.data[0].length);
+        for (int i = 0; i < this.data.length; ++i) {
+            for (int j = 0; j < this.data[0].length; ++j) {
+                copia.data[i][j] = this.data[i][j];
+            }
+        }
+
+        return copia;
     }
 }

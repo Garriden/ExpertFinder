@@ -2,9 +2,7 @@ package com.company;
 
 // Autor: Ruben Bagan Benavides 20/04/2016
 
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.ErrorManager;
 
 public class Main {
     public static Scanner scan = new Scanner(System.in);
@@ -403,7 +401,19 @@ public class Main {
 
         MatriuDriver md = new MatriuDriver();
         md.run();
-/*
+
+       /* Matriu a = new Matriu(2,2);
+        Matriu b = new Matriu(2,2);
+
+        a.set_valor(0,0, 1);
+        print_matriu(a);
+
+        b = a.copia_profunditat();
+        b.set_valor(0,0, 2);
+        print_matriu(a);
+        print_matriu(b);
+    */
+        /*
         inicializar_grafo();
         int opcio = menu();
         while (opcio != 0) {
