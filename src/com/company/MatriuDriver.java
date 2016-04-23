@@ -20,15 +20,33 @@ public class MatriuDriver {
         return n;
     }
 
+    private void print_matriu(Matriu m) {
+        for (int i = 0; i < m.get_nombre_files(); i++) {
+            for (int j = 0; j < m.get_nombre_columnes(); j++) {
+                System.out.printf("%.2f\t", m.get_valor(i, j));
+            }
+            System.out.println();
+        }
+    }
+
     private void llistar_matrius() {
         System.out.println("Llistar matrius: ");
         int id = 0;
         for (Matriu m : cjtMatrius) {
             System.out.println("ID: " + id);
-            m.print_matriu();
+            print_matriu(m);
             System.out.println();
             ++id;
         }
+    }
+
+    private int llegir_natural() {
+        int n = scan.nextInt();
+        while (n <= 0) {
+            System.out.println("Tens que escriure un nombre natural mes gran que 0, (el zero no el tractem com a natural)");
+            n = scan.nextInt();
+        }
+        return n;
     }
 
     private Matriu demanar_matriu(String msg) {
@@ -39,7 +57,7 @@ public class MatriuDriver {
     }
 
     private int menu() {
-        System.out.println("Per obtenir el llistat de identificadors de les matrius tria l'opcio 17");
+        System.out.println("Per obtenir el llistat de identificadors de les matrius tria l'opcio 16");
         System.out.println("1\t Nova matriu");
         System.out.println("2\t Multiplicar");
         System.out.println("3\t Sumar");
@@ -64,26 +82,25 @@ public class MatriuDriver {
 
     private void nova_matriu() {
         System.out.println("Introdueix el nombre de files i columnes (ej: 4 2): ");
-        int files = scan.nextInt();
-        int columnes = scan.nextInt();
+        int files = llegir_natural();
+        int columnes = llegir_natural();
         System.out.println("Introdueix les dades: ");
-        double[][] dades = new double[files][columnes];
+
+        Matriu m = new Matriu(files, columnes);
         for (int i = 0; i < files; i++) {
             for (int j = 0; j < columnes; j++) {
-                dades[i][j] = scan.nextDouble();
+                m.set_valor(i, j, scan.nextDouble());
             }
         }
-        Matriu m = new Matriu();
-        m.set_data(dades);
         cjtMatrius.add(m);
     }
 
     private void multiplicar() {
         Matriu a = demanar_matriu("Introdueix l'identificador de la matriu A: ");
         Matriu b = demanar_matriu("Introdueix l'identificador de la matriu B: ");
-        if (a.get_data().length == b.get_data()[0].length) {
+        if (a.get_nombre_columnes() == b.get_nombre_files()) {
             System.out.println("Resultat de la multiplicacio: ");
-            a.multiplicar(b).print_matriu();
+            print_matriu(a.multiplicar(b));
         }
         else {
             System.out.println("Error: Les dimensions de les matrius son incompatibles");
@@ -93,61 +110,61 @@ public class MatriuDriver {
     private void sumar() {
         Matriu a = demanar_matriu("Introdueix l'identificador de la matriu A: ");
         Matriu b = demanar_matriu("Introdueix l'identificador de la matriu B: ");
-        if (a.get_data().length == b.get_data().length && a.get_data()[0].length == b.get_data()[0].length) {
+        if (a.get_nombre_columnes() == b.get_nombre_columnes() && a.get_nombre_files() == b.get_nombre_files()){
             System.out.println("Resultat de la suma: ");
-            a.sumar(b).print_matriu();
+            print_matriu(a.sumar(b));
         }
         else {
-            System.out.println("Les dimensions de les matrius son incompatibles");
+            System.out.println("Error: Les dimensions de les matrius son incompatibles");
         }
     }
 
     private void restar() {
         Matriu a = demanar_matriu("Introdueix l'identificador de la matriu A: ");
         Matriu b = demanar_matriu("Introdueix l'identificador de la matriu B: ");
-        if (a.get_data().length == b.get_data().length && a.get_data()[0].length == b.get_data()[0].length) {
+        if (a.get_nombre_columnes() == b.get_nombre_columnes() && a.get_nombre_files() == b.get_nombre_files()) {
             System.out.println("Resultat de la resta: ");
-            a.restar(b).print_matriu();
+            print_matriu(a.restar(b));
         }
         else {
-            System.out.println("Les dimensions de les matrius son incompatibles");
+            System.out.println("Error: Les dimensions de les matrius son incompatibles");
         }
     }
 
     private void transposar() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
         System.out.println("Resultat de la transposada: ");
-        m.transposar().print_matriu();
+        print_matriu(m.transposar());
     }
 
     private void normalitzar_files() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
         System.out.println("Resultat de la normalitzada per files: ");
-        m.normalitzar_fila().print_matriu();
+        print_matriu(m.normalitzar_fila());
     }
 
     private void normalitzar_columnes() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
         System.out.println("Resultat de la normalitzada per columnes: ");
-        m.normalitzar_columna().print_matriu();
+        print_matriu(m.normalitzar_columna());
     }
 
     private void obtenir_fila_iessima() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
-        System.out.println("Introdueix la fila [1,"+ m.get_data().length + "]: ");
+        System.out.println("IIntrodueix la fila i-èssima que vols obtenir [1,"+ m.get_nombre_files() + "]: ");
         int fila = llegir_enter(1, m.get_nombre_files());
         --fila;
         System.out.println("Fila i-èssima: ");
-        m.get_fila_iessima(fila).print_matriu();
+        print_matriu(m.get_fila_iessima(fila));
     }
 
     private void obtenir_columna_iessima() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
-        System.out.println("Introdueix la columna [1,"+ m.get_data()[0].length + "]: ");
+        System.out.println("Introdueix la columna i-èssima que vols obtenir [1,"+ m.get_nombre_columnes() + "]: ");
         int columna = llegir_enter(1, m.get_nombre_columnes());
         --columna;
         System.out.println("Columna i-èssima: ");
-        m.get_columna_iessima(columna).print_matriu();
+        print_matriu(m.get_columna_iessima(columna));
 
     }
 
@@ -161,7 +178,7 @@ public class MatriuDriver {
             double valor = scan.nextDouble();
             m.set_valor(fila, i, valor);
         }
-        m.print_matriu();
+        print_matriu(m);
     }
 
     private void inicialitzar_columna_iessima() {
@@ -174,7 +191,7 @@ public class MatriuDriver {
             double valor = scan.nextDouble();
             m.set_valor(i, columna, valor);
         }
-        m.print_matriu();
+        print_matriu(m);
     }
 
     private void eliminar_columna_iessima() {
@@ -183,7 +200,7 @@ public class MatriuDriver {
         int columna = llegir_enter(1, m.get_nombre_columnes());
         --columna;
         m.eliminar_columna(columna);
-        m.print_matriu();
+        print_matriu(m);
     }
 
     private void eliminar_fila_iessima() {
@@ -192,75 +209,75 @@ public class MatriuDriver {
         int fila = llegir_enter(1, m.get_nombre_files());
         --fila;
         m.eliminar_fila(fila);
-        m.print_matriu();
+        print_matriu(m);
     }
 
     private void afegir_columna() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
         m.afegir_columna();
-        m.print_matriu();
+        print_matriu(m);
     }
 
     private void afegir_fila() {
         Matriu m = demanar_matriu("Introdueix l'identificador de la matriu: ");
         m.afegir_fila();
-        m.print_matriu();
+        print_matriu(m);
     }
 
     private void demo() {
         System.out.println("Creo una matriu anomenada A de 8 x 8: ");
         Matriu a = new Matriu(8,8);
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Inicialitzare la fila 4 amb valor 1");
         double[] dades_fila_iessima = {1,1,1,1,1,1,1,1};
         a.set_fila_iessima(3, dades_fila_iessima);
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Inicialitzare la columna 4 amb valor 1");
         a.set_columna_iessima(3, dades_fila_iessima);
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Inicialitzare la posicio 0,0 amb valor 5");
         a.set_valor(0,0, 5);
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Escriu la fila 2");
-        a.get_fila_iessima(1).print_matriu();
+        print_matriu(a.get_fila_iessima(1));
         System.out.println("Escriu la columna 1");
-        a.get_columna_iessima(0).print_matriu();
+        print_matriu(a.get_columna_iessima(0));
         System.out.println("Elimina la fila 3");
         a.eliminar_fila(2);
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Elimina la columna 3");
         a.eliminar_columna(2);
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Afeigr una nova fila");
         a.afegir_fila();
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Afegir una nova columna");
         a.afegir_columna();
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Elimina la ultima columna i fila afegida i la primera columna i primera fila ");
         a.eliminar_columna(0);
         a.eliminar_columna(a.get_nombre_columnes() - 1);
         a.eliminar_fila(0);
         a.eliminar_fila(a.get_nombre_files() - 1);
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Duplicare la matriu A en una nova matrui B");
         Matriu b = a;
-        b.print_matriu();
+        print_matriu(b);
         System.out.println("Suma A + B");
-        a.sumar(b).print_matriu();
+        print_matriu(a.sumar(b));
         System.out.println("Resta A - B");
-        a.restar(b).print_matriu();
+        print_matriu(a.restar(b));
         System.out.println("Multiplica A * B");
-        a.multiplicar(b).print_matriu();
+        print_matriu(a.multiplicar(b));
         System.out.println("Elimina la ultima columna");
         a.eliminar_columna(a.get_nombre_columnes() - 1);
-        a.print_matriu();
+        print_matriu(a);
         System.out.println("Transapoa la matriu A");
-        a.transposar().print_matriu();
+        print_matriu(a.transposar());
         System.out.println("Normalitza la matriu A per files");
-        a.normalitzar_fila().print_matriu();
+        print_matriu(a.normalitzar_fila());
         System.out.println("Normalitza la matyrui A per Columnes");
-        a.normalitzar_columna().print_matriu();
+        print_matriu(a.normalitzar_columna());
     }
 
     public MatriuDriver() {

@@ -5,16 +5,8 @@ package com.company;
 public class Matriu {
     private double[][] data;
 
-    // Pre:  Cert.
-    // Post: Crea una nova instancia d'una matriu sense inicialitzar.
-    // Cost: O(1).
-    public Matriu() {
-        this.data = null;
-    }
-
-    // Pre:	 fila >= 0; columna >= 0.
-    // Post: Crea una nova instancia d'una matriu inicialitzada amb les
-    //		 dimensions fila x columna.
+    // Pre:	 fila >= 1; columna >= 1.
+    // Post: Crea una nova instancia d'una matriu inicialitzada amb les dimensions fila x columna. Tots els valors son 0.
     // Cost: O(n²).
     public Matriu(int fila, int columna) {
         this.data = new double[fila][columna];
@@ -34,18 +26,16 @@ public class Matriu {
         this.data = data;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada; 0 <= fila < Matriu.fila
-    //		 data != NULL. La longitud de data té que ser igual al numero de
-    //		 columnes de la matriu implícita.
+    // Pre:  0 <= fila < Matriu.fila; data != NULL. La longitud de data té que ser igual al numero de columnes de la
+    //       matriu implícita.
     // Post: La fila i-èssima de la matriu implícita té com a valors data.
     // Cost: O(n)
     public void set_fila_iessima(int fila, double[] data) {
         System.arraycopy(data, 0, this.data[fila], 0, data.length);
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada; 0 <= columna < Matriu.columna
-    //		 data != NULL. La longitud de data té que ser igual al numero de
-    //		 files de la matriu implícita.
+    // Pre:  0 <= columna < Matriu.columna; data != NULL. La longitud de data té que ser igual al numero de files de la
+    //       matriu implícita.
     // Post: La columna i-èssima de la matriu implícita té com a valors data.
     // Cost: O(n)
     public void set_columna_iessima(int columna, double[] data) {
@@ -54,30 +44,29 @@ public class Matriu {
         }
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada, 0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
+    // Pre:  0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
     // Post: La matriu implicita té un nou valor en la fila i columna pasades per paràmetre.
     // Cost: O(1).
     public void set_valor(int fila, int columna, double valor) {
         this.data[fila][columna] = valor;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada.
+    // Pre:  Cert.
     // Post: Retorna el nombre de files que té la matriu implícita.
     // Cost: O(1).
     public int get_nombre_files() {
         return this.data.length;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada.
+    // Pre:  Cert.
     // Post: Retorna el nombre de columnes que té la matriu implícita.
     // Cost: O(1).
     public int get_nombre_columnes() {
         return  this.data[0].length;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada, 0 <= fila < Matriu.fila
-    // Post: Retorna una Matriu C coma resultat de obtenir la fila i-èssima
-    //		 de la matriu implícita.
+    // Pre:  0 <= fila < Matriu.fila
+    // Post: Retorna una Matriu C coma resultat de obtenir la fila i-èssima de la matriu implícita.
     // Cost: O(n²).
     public Matriu get_fila_iessima(int fila) {
         Matriu m = new Matriu(1, this.data[0].length);
@@ -85,9 +74,16 @@ public class Matriu {
         return m;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada, 0 <= columna < Matriu.columna
-    // Post: Retorna una Matriu C coma resultat de obtenir la columna i-èssima
-    //		 de la matriu implícita.
+    // Pre:  0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
+    // Post: Retorna el valor en la fila i columna pasades per paràmetre de la matriu implicita.
+    // Cost: O(1).
+    public double get_valor(int fila, int columna) {
+        return this.data[fila][columna];
+    }
+
+
+    // Pre:  0 <= columna < Matriu.columna
+    // Post: Retorna una Matriu C coma resultat de obtenir la columna i-èssima de la matriu implícita.
     // Cost: O(n²).
     public Matriu get_columna_iessima(int columna) {
         Matriu m = new Matriu(this.data.length, 1);
@@ -98,8 +94,7 @@ public class Matriu {
         return m;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada, 0 <= fila < Matriu.fila; El numero de files de la matriu
-    //       >= 2.
+    // Pre:  0 <= fila < Matriu.fila; El numero de files de la matriu >= 2.
     // Post: S'ha eliminat de la matriu implícita la fila pasada com a paràmetre.
     // Cost: O(n²).
     public void eliminar_fila(int fila) {
@@ -114,9 +109,8 @@ public class Matriu {
         this.data = novaData;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada, 0 <= columna < Matriu.fila; El numero de columnes de la matriu
-    //       >= 2.
-    // Post: S'ha eliminat de la matriu implícita la fila pasada com a paràmetre.
+    // Pre:  0 <= columna < Matriu.fila; El numero de columnes de la matriu >= 2.
+    // Post: S'ha eliminat de la matriu implícita la columna pasada com a paràmetre.
     // Cost: O(n²).
     public void eliminar_columna(int columna) {
         double[][] novaData = new double[this.data.length][this.data[0].length - 1];
@@ -128,7 +122,7 @@ public class Matriu {
         this.data = novaData;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada.
+    // Pre:  Cert.
     // Post: S'ha afegit a la matriu implícita una fila on tots els seus valors són 0. Aquesta nova fila és la
     //       última fila de la matriu. El numero de files de la matriu és Matriu.files + 1.
     // Cost: O(n²).
@@ -140,7 +134,7 @@ public class Matriu {
         this.data = novaData;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada.
+    // Pre:  Cert.
     // Post: S'ha afegit a la matriu implícita una columna on tots els seus valors són 0. Aquesta nova columna és la
     //       última columna de la matriu. El numero de columnes de la matriu és Matriu.columnes + 1.
     // Cost: O(n²).
@@ -152,11 +146,9 @@ public class Matriu {
         this.data = novaData;
     }
 
-    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència
-    //		 com B, tant A com B tenen que tenir mateixes dimensions i no ser
-    //		 buides. B != NULL, A té que estar inicialitzada.
-    // Post: Retorna una matriu C com a resultat de la suma de la matriu
-    //		 implícita (A) amb la matriu B. C = A + B.
+    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència com B, tant A com B tenen que tenir
+    //       mateixes dimensions. B != NULL.
+    // Post: Retorna una matriu C com a resultat de la suma de la matriu implícita (A) amb la matriu B. C = A + B.
     // Cost: O(n²).
     public Matriu sumar(Matriu b) {
         Matriu c = new Matriu(this.data.length, this.data[0].length);
@@ -168,11 +160,9 @@ public class Matriu {
         return c;
     }
 
-    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència
-    //		 com B, tant A com B tenen que tenir mateixes dimensions i no ser
-    //		 buides. B != NULL,  A té que estar inicialitzada.
-    // Post: Retorna una matriu C com a resultat de la resta de la matriu
-    //		 implícita (A) amb la matriu B. C = A - B.
+    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència com B, tant A com B tenen que tenir
+    //       mateixes dimensions. B != NULL.
+    // Post: Retorna una matriu C com a resultat de la resta de la matriu implícita (A) amb la matriu B. C = A - B.
     // Cost: O(n²).
     public Matriu restar(Matriu b) {
         Matriu c = new Matriu(this.data.length, this.data[0].length);
@@ -185,11 +175,9 @@ public class Matriu {
         return c;
     }
 
-    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència
-    //		 com B, B != NULL,  A té que estar inicialitzada. El nombre files de
+    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència com B, B != NULL. El nombre files de
     //		 la Matriu A té que ser igual al nombre de columnes de la Matriu B.
-    // Post: Retorna una matriu C com a resultat de multiplicar la matriu
-    //		 implícita (A) amb la matriu B. C = A * B.
+    // Post: Retorna una matriu C com a resultat de multiplicar la matriu implícita (A) amb la matriu B. C = A * B.
     // Cost: O(n³).
     public Matriu multiplicar(Matriu b) {
         Matriu c = new Matriu(this.data.length, b.data[0].length);
@@ -204,9 +192,8 @@ public class Matriu {
         return c;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada.
-    // Post: Retorna una matriu C com a resultat de transposar la matriu
-    //		 implícita.
+    // Pre:  Cert
+    // Post: Retorna una matriu C com a resultat de transposar la matriu implícita.
     // Cost: O(n²).
     public Matriu transposar() {
         Matriu matriu_transposada = new Matriu(this.data[0].length, this.data.length);
@@ -219,9 +206,8 @@ public class Matriu {
         return matriu_transposada;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada.
-    // Post: Retorna una Matriu C com a resultat de normalitzar per files
-    //		 la matriu implícita.
+    // Pre:  Cert.
+    // Post: Retorna una Matriu C com a resultat de normalitzar per files la matriu implícita.
     // Cost: O(n²).
     public Matriu normalitzar_fila() {
         Matriu m = new Matriu(this.data.length, this.data[0].length);
@@ -239,9 +225,8 @@ public class Matriu {
         return m;
     }
 
-    // Pre:  La matriu implícita té que estar inicialitzada.
-    // Post: Retorna una Matriu C com a resultat de normalitzar per columnes
-    //		 la matriu implícita.
+    // Pre:  Cert.
+    // Post: Retorna una Matriu C com a resultat de normalitzar per columnes la matriu implícita.
     // Cost: O(n²).
     public Matriu normalitzar_columna() {
         Matriu m = new Matriu(this.data.length, this.data[0].length);
@@ -257,31 +242,5 @@ public class Matriu {
         }
 
         return m;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // 						FUNCIONES EXTRAS								  //
-    ////////////////////////////////////////////////////////////////////////////
-
-    // EXPERIMENTAL / TEMPORAL
-    public void print_matriu() {
-        for (int i = 0; i < data.length; i++) {
-            for (int j = 0; j < data[0].length; j++) {
-                System.out.printf("%.2f\t", data[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
-    // EXPERIMENTAL / TEMPORAL
-    public static Matriu random(int tamany) {
-        Matriu a = new Matriu(tamany,tamany);
-        for (int i = 0; i < tamany; i++) {
-            for (int j = 0; j < tamany; j++) {
-                a.data[i][j] = Math.random();
-            }
-        }
-
-        return a;
     }
 }

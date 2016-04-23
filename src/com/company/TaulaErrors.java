@@ -9,4 +9,5 @@ public class TaulaErrors {
     public static final String CAMI_NO_VALID = "CamiNoValid";
     public static final String ARGUMENT_NUL = "ArgumentNul";
     public static final String NOM_NODE_INVALID = "NomNodeInvalid";
+    public static final String NOMBRE_NO_NATURAL = "NombreNoNatural";
 }

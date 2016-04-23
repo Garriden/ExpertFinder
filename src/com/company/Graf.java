@@ -1,5 +1,6 @@
 package com.company;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static com.company.Node.TipusNode.*;
@@ -19,51 +20,51 @@ public class Graf {
     private ArrayList<Node> terme;
 
 
-    public Graf()
-    {
-        paperAutor = new Matriu();
-        paperConferencia = new Matriu();
-        paperTerme = new Matriu();
+    // Para crear un grafo hay que inicializarlo siempre, sino no tienes ningun grafo, seria un grafo vacio.
+    // Los ArrayList de nodos, tienen que tener almenos 1 elemento cada uno, y las Matrices son P x Y, donde Y es Conf,
+    // Autor o Termino y P es Paper. Los nodos en los ArrayList su id tiene que ser igual a la posicion donde estan
+    // en el vector, y la misma en su Matriz.
+    /* Ejemplo:
+        ArrayList<Nodo> Autor <-- Contiene 2 elementos, en la posicion 0 hay el Nodo (0 , Marco), en la posicion 1
+                                  hay el Nodo (1, Polo)
+        ArrayList<Nodo> Paper <-- Contiene 3 elementos: en la pos 0, hay el nodo (0, Papel1), en la pos 1 (1, Papel2),
+                                  y en la pos 2 (2, Papel3)
 
-        paper = new ArrayList<>();
-        conferencia = new ArrayList<>();
-        autor = new ArrayList<>();
-        terme = new ArrayList<>();
+        La matriz es de 3 x 2:
+                Marco   Polo
+        Papel1  0.0     0.0
+        Papel2  0.0     0.0
+        Papel3  0.0     0.0
+
+
+     */
+
+
+    public Graf(Matriu paperAutor, Matriu paperConferencia, Matriu paperTerme, ArrayList<Node> paper,
+                ArrayList<Node> terme, ArrayList<Node> autor, ArrayList<Node> conferencia)
+    {
+        this.paperAutor = paperAutor;
+        this.paperConferencia = paperConferencia;
+        this.paperTerme = paperTerme;
+
+        this.paper = paper;
+        this.conferencia = conferencia;
+        this.autor = autor;
+        this.terme = terme;
     }
 
-    // Falta pre,post,coste
     public int afegir_node(Node.TipusNode tipusNode, String nomNode) {
-        int id = 0;
-        switch (tipusNode){
+        switch (tipusNode) {
             case AUTOR:
-                id = this.autor.size();
-                break;
-            case CONFERENCIA:
-                id = this.conferencia.size();
-                break;
-            case TERME:
-                id = this.terme.size();
-                break;
-            case PAPER:
-                id = this.paper.size();
-                break;
-            default:
-                return -1;
-        }
-        return afegir_node(new Node(id, nomNode, tipusNode));
-    }
-
-    public int afegir_node(Node node)
-    {
-        switch (node.get_tipus_node()) {
-            case AUTOR:
-                if (this.autor.add(node)) {
+                int id = this.autor.size();
+                if (this.autor.add(new Node(id, nomNode, tipusNode))) {
                     this.paperAutor.afegir_columna();
                     return 0;
                 }
                 break;
             case PAPER:
-                if (this.paper.add(node)) {
+                id = this.paper.size();
+                if (this.paper.add(new Node(id, nomNode, tipusNode))) {
                     this.paperAutor.afegir_fila();
                     this.paperTerme.afegir_fila();
                     this.paperConferencia.afegir_fila();
@@ -71,13 +72,15 @@ public class Graf {
                 }
                 break;
             case TERME:
-                if (this.terme.add(node)) {
+                id = this.terme.size();
+                if (this.terme.add(new Node(id, nomNode, tipusNode))) {
                     paperTerme.afegir_columna();
                     return 0;
                 }
                 break;
             case CONFERENCIA:
-                if (this.conferencia.add(node)) {
+                id = this.conferencia.size();
+                if (this.conferencia.add(new Node(id, nomNode, tipusNode))) {
                     this.paperConferencia.afegir_columna();
                     return 0;
                 }
@@ -181,6 +184,22 @@ public class Graf {
         return 0;
     }
 
+    public Node get_node(int i, Node.TipusNode tipus)
+    {
+        switch(tipus) {
+            case AUTOR:
+                if(i < autor.size()) return autor.get(i);
+            case CONFERENCIA:
+                if(i < conferencia.size()) return conferencia.get(i);
+            case PAPER:
+                if(i < paper.size()) return paper.get(i);
+            case TERME:
+                if(i < terme.size()) return terme.get(i);
+            default:
+                return null;
+        }
+    }
+
     public Matriu get_paper_autor() {
         return this.paperAutor;
     }
@@ -201,7 +220,6 @@ public class Graf {
         return this.conferencia;
     }
 
-
     public ArrayList<Node> get_autor() {
         return this.autor;
     }
@@ -210,47 +228,9 @@ public class Graf {
         return this.terme;
     }
 
+
+
     public void set_paper_autor(double[][] matriuAdjecencia) {
         paperAutor.set_data(matriuAdjecencia);
-    }
-
-    public void set_paper_terme(double[][] matriuAdjecencia) {
-        paperTerme.set_data(matriuAdjecencia);
-    }
-
-    public void set_paper_conferencia(double[][] matriuAdjecencia) {
-        paperConferencia.set_data(matriuAdjecencia);
-    }
-
-    public void set_autor(ArrayList<Node> autor) {
-        this.autor = autor;
-    }
-
-    public void set_paper(ArrayList<Node> paper) {
-        this.paper = paper;
-    }
-
-    public void set_terme(ArrayList<Node> terme) {
-        this.terme = terme;
-    }
-
-    public void set_conferencia(ArrayList<Node> conferencia) {
-        this.conferencia = conferencia;
-    }
-
-    public Node get_node(int i, Node.TipusNode tipus)
-    {
-        switch(tipus) {
-            case AUTOR:
-                if(i < autor.size()) return autor.get(i);
-            case CONFERENCIA:
-                if(i < conferencia.size()) return conferencia.get(i);
-            case PAPER:
-                if(i < paper.size()) return paper.get(i);
-            case TERME:
-                if(i < terme.size()) return terme.get(i);
-            default:
-                return null;
-        }
     }
 }

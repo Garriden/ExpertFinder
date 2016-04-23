@@ -10,6 +10,12 @@ import java.util.Scanner;
 public class ControladorPresentacio {
     public ControladorDomini controladorDomini;
 
+    private CamiPresentacio descodificar_cami(String cami) {
+        String c = cami.substring(0, cami.indexOf('|'));
+        String descripcio = cami.substring(cami.indexOf('|')+1, cami.length());
+        return new CamiPresentacio(c, descripcio);
+    }
+
     public Node.TipusNode string_to_tipus_node(String tipusNode) {
         switch (tipusNode.toUpperCase()) {
             case "AUTOR": return Node.TipusNode.AUTOR;
@@ -18,12 +24,6 @@ public class ControladorPresentacio {
             case "CONFERENCIA": return Node.TipusNode.CONFERENCIA;
             default: return null;
         }
-    }
-
-    private CamiPresentacio descodificar_cami(String cami) {
-        String c = cami.substring(0, cami.indexOf('|'));
-        String descripcio = cami.substring(cami.indexOf('|')+1, cami.length());
-        return new CamiPresentacio(c, descripcio);
     }
 
     public ControladorPresentacio() {
@@ -37,42 +37,42 @@ public class ControladorPresentacio {
         controladorDomini.afegir_node(tipus, nom);
     }
 
-    public int eliminar_node(String tipusNode, int idNode) {
-        if (tipusNode == null) return -2;
-        if (idNode < 0) return -4;
+    public int eliminar_node(String tipusNode, int idNode) throws ControlError {
+        if (tipusNode == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        if (idNode < 0) throw new ControlError(TaulaErrors.NOMBRE_NO_NATURAL);
         Node.TipusNode tipus = string_to_tipus_node(tipusNode);
-        if (tipus == null) return -3;
+        if (tipus == null) throw new ControlError(TaulaErrors.NOM_NODE_INVALID);
         return controladorDomini.eliminar_node(tipus, idNode);
     }
 
-    public int modificar_node(String tipusNode, int idNode, String nouNom) {
-        if (tipusNode == null || nouNom == null) return -2;
-        if (idNode < 0) return -4;
+    public int modificar_node(String tipusNode, int idNode, String nouNom) throws ControlError {
+        if (tipusNode == null || nouNom == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        if (idNode < 0) throw new ControlError(TaulaErrors.NOMBRE_NO_NATURAL);
         Node.TipusNode tipus = string_to_tipus_node(tipusNode);
-        if (tipus == null) return -3;
+        if (tipus == null) throw new ControlError(TaulaErrors.NOM_NODE_INVALID);
         return controladorDomini.modificar_node(tipus, idNode, nouNom);
     }
 
-    public String[] get_llista_nodes(String tipusNode) {
-        if (tipusNode == null) return null;
+    public String[] get_llista_nodes(String tipusNode) throws ControlError {
+        if (tipusNode == null)  throw new ControlError(TaulaErrors.ARGUMENT_NUL);
         Node.TipusNode tipus = string_to_tipus_node(tipusNode);
-        if (tipus == null) return null;
+        if (tipus == null) throw new ControlError(TaulaErrors.NOM_NODE_INVALID);
         return controladorDomini.get_llista_nodes(tipus);
     }
 
-    public int afegir_aresta(String tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
-        if (tipusNodeDesti == null) return -2;
-        if (idNodeOrigen < 0 || idNodeOrigen < 0) return -4;
+    public int afegir_aresta(String tipusNodeDesti, int idNodeOrigen, int idNodeDesti) throws ControlError {
+        if (tipusNodeDesti == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        if (idNodeOrigen < 0 || idNodeOrigen < 0) throw new ControlError(TaulaErrors.NOMBRE_NO_NATURAL);
         Node.TipusNode tipus = string_to_tipus_node(tipusNodeDesti);
-        if (tipus == null) return -3;
+        if (tipus == null) throw new ControlError(TaulaErrors.NOM_NODE_INVALID);
         return controladorDomini.afegir_aresta(tipus, idNodeOrigen, idNodeDesti);
     }
 
-    public int eliminar_aresta(String tipusNodeDesti, int idNodeOrigen, int idNodeDesti) {
-        if (tipusNodeDesti == null) return -2;
-        if (idNodeOrigen < 0 || idNodeOrigen < 0) return -4;
+    public int eliminar_aresta(String tipusNodeDesti, int idNodeOrigen, int idNodeDesti) throws ControlError {
+        if (tipusNodeDesti == null) throw new ControlError(TaulaErrors.ARGUMENT_NUL);
+        if (idNodeOrigen < 0 || idNodeOrigen < 0) throw new ControlError(TaulaErrors.NOMBRE_NO_NATURAL);
         Node.TipusNode tipus = string_to_tipus_node(tipusNodeDesti);
-        if (tipus == null) return -3;
+        if (tipus == null) throw new ControlError(TaulaErrors.NOM_NODE_INVALID);
         return controladorDomini.eliminar_aresta(tipus, idNodeOrigen, idNodeDesti);
     }
 

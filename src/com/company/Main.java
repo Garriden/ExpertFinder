@@ -19,6 +19,15 @@ public class Main {
         return n;
     }
 
+    public static void print_matriu(Matriu m) {
+        for (int i = 0; i < m.get_nombre_files(); i++) {
+            for (int j = 0; j < m.get_nombre_columnes(); j++) {
+                System.out.printf("%.2f\t", m.get_valor(i, j));
+            }
+            System.out.println();
+        }
+    }
+
     public static void tractar_error(ControlError error) {
         switch (error.getMessage()) {
             case "CamiNotFound":
@@ -39,23 +48,20 @@ public class Main {
         }
     }
 
-    public static int escriure_llista_nodes(String tipusNode) {
-        if (tipusNode == null) return -2;
+    public static void escriure_llista_nodes(String tipusNode) throws ControlError {
         String[] nodes = controladorPresentacio.get_llista_nodes(tipusNode.toUpperCase());
-        if (nodes == null) return -3;
         for (int i = 0; i < nodes.length; ++i) {
             System.out.println("Node amb id: " + (i+1) + " Nom: " + nodes[i]);
         }
-        return 0;
     }
 
-    public static void print_debug() {
+    public static void print_debug() throws ControlError {
         System.out.println("MATRIUS");
-        controladorPresentacio.controladorDomini.graf.get_paper_autor().print_matriu();
+        print_matriu(controladorPresentacio.controladorDomini.graf.get_paper_autor());
         System.out.println();
-        controladorPresentacio.controladorDomini.graf.get_paper_conferencia().print_matriu();
+        print_matriu(controladorPresentacio.controladorDomini.graf.get_paper_conferencia());
         System.out.println();
-        controladorPresentacio.controladorDomini.graf.get_paper_terme().print_matriu();
+        print_matriu(controladorPresentacio.controladorDomini.graf.get_paper_terme());
         System.out.println("NODES");
         String[] nodes = controladorPresentacio.get_llista_nodes("AUTOR");
         if (nodes != null) {
@@ -112,11 +118,17 @@ public class Main {
         String tipusNode = scan.nextLine();
         System.out.println("Introdueix el nom del node de tipus " + tipusNode + ": ");
         String nomNode = scan.nextLine();
-        int error = controladorPresentacio.afegir_node(tipusNode, nomNode);
-        if (error != 0) tractar_error(error);
-        else {
+        try {
+            controladorPresentacio.afegir_node(tipusNode, nomNode);
             System.out.println("S'ha afegit correctament");
+        } catch (ControlError controlError) {
+            tractar_error(controlError);
+        }
+
+        try {
             print_debug();
+        } catch (ControlError controlError) {
+            tractar_error(controlError);
         }
     }
 
@@ -134,48 +146,74 @@ public class Main {
             opcio = llegir_enter(0,6);
 
             if (opcio >= 1 && opcio <= 4) {
-                int error = 0;
                 switch (opcio) {
-                    case 1: error = escriure_llista_nodes("AUTOR");       break;
-                    case 2: error = escriure_llista_nodes("TERME");        break;
-                    case 3: error = escriure_llista_nodes("PAPER");        break;
-                    case 4: error = escriure_llista_nodes("CONFERENCIA");  break;
+                    case 1:
+                        try {
+                            escriure_llista_nodes("AUTOR");
+                        } catch (ControlError controlError) {
+                            tractar_error(controlError);
+                        }
+                        break;
+                    case 2:
+                        try {
+                            escriure_llista_nodes("TERME");
+                        } catch (ControlError controlError) {
+                            tractar_error(controlError);
+                        }
+                        break;
+                    case 3:
+                        try {
+                            escriure_llista_nodes("PAPER");
+                        } catch (ControlError controlError) {
+                            tractar_error(controlError);
+                        }
+                        break;
+                    case 4:
+                        try {
+                            escriure_llista_nodes("CONFERENCIA");
+                        } catch (ControlError controlError) {
+                            tractar_error(controlError);
+                        }
+                        break;
                 }
-                if (error != 0) tractar_error(error);
             }
             else if (opcio == 5) {
                 scan.nextLine();
                 System.out.println("Escriu el tipus de node <Autor,Conferencia,Terme,Paper>: ");
                 String tipusNode = scan.nextLine();
-                int error = escriure_llista_nodes(tipusNode);
-                if (error != 0) tractar_error(error);
-                else {
+                try {
+                    escriure_llista_nodes(tipusNode);
                     System.out.println("Escriu l'identificador del node que vols modificar: ");
                     int id = scan.nextInt();
                     scan.nextLine();
                     System.out.println("Escriu el nou nom del node amb id: " + id);
                     String nouNom = scan.nextLine();
-                    error = controladorPresentacio.modificar_node(tipusNode, (id-1), nouNom);
-                    if (error != 0) tractar_error(error);
-                    else System.out.println("S'ha modificat el node amb id " + id + " amb el nou nom: " + nouNom);
+                    controladorPresentacio.modificar_node(tipusNode, (id-1), nouNom);
+                    System.out.println("S'ha modificat el node amb id " + id + " amb el nou nom: " + nouNom);
+                } catch (ControlError controlError) {
+                    tractar_error(controlError);
                 }
             }
             else if (opcio == 6) {
                 scan.nextLine();
                 System.out.println("Escriu el tipus de node <Autor,Conferencia,Terme,Paper>: ");
                 String tipusNode = scan.nextLine();
-                int error = escriure_llista_nodes(tipusNode);
-                if (error != 0) tractar_error(error);
-                else {
+                try {
+                    escriure_llista_nodes(tipusNode);
                     System.out.println("Escriu l'identificador del node que vols eliminar: ");
                     int id = scan.nextInt();
-                    error = controladorPresentacio.eliminar_node(tipusNode, (id-1));
-                    if (error != 0) tractar_error(error);
-                    else System.out.println("El node amb identificador " + id + " s'ha eliminat correctament");
+                    controladorPresentacio.eliminar_node(tipusNode, (id-1));
+                    System.out.println("El node amb identificador " + id + " s'ha eliminat correctament");
+                } catch (ControlError controlError) {
+                    tractar_error(controlError);
                 }
             }
 
-            print_debug();
+            try {
+                print_debug();
+            } catch (ControlError controlError) {
+                tractar_error(controlError);
+            }
         }
     }
 
@@ -207,11 +245,17 @@ public class Main {
         int idNodeOrigen = scan.nextInt();
         System.out.println("Escriu l'identificador del node desti: ");
         int idNodeDesti = scan.nextInt();
-        int error = controladorPresentacio.afegir_aresta(tipusNode, idNodeOrigen, idNodeDesti);
-        if (error != 0) tractar_error(error);
-        else {
+        try {
+            controladorPresentacio.afegir_aresta(tipusNode, idNodeOrigen, idNodeDesti);
             System.out.println("S'ha afegit una nova aresta entre els nodes amb id " + idNodeOrigen + " a " + idNodeDesti);
+        } catch (ControlError controlError) {
+            tractar_error(controlError);
+        }
+
+        try {
             print_debug();
+        } catch (ControlError controlError) {
+            tractar_error(controlError);
         }
     }
 
@@ -222,16 +266,26 @@ public class Main {
         int idNodeOrigen = scan.nextInt();
         System.out.println("Escriu l'identificador del node desti: ");
         int idNodeDesti = scan.nextInt();
-        int error = controladorPresentacio.eliminar_aresta(tipusNode, idNodeOrigen, idNodeDesti);
-        if (error != 0) tractar_error(error);
-        else {
+        try {
+            controladorPresentacio.eliminar_aresta(tipusNode, idNodeOrigen, idNodeDesti);
             System.out.println("S'ha eliminat una aresta entre els nodes amb id " + idNodeOrigen + " a " + idNodeDesti);
+        } catch (ControlError controlError) {
+            tractar_error(controlError);
+        }
+
+        try {
             print_debug();
+        } catch (ControlError controlError) {
+            tractar_error(controlError);
         }
     }
 
     public static void consultar_arestes() {
-        print_debug();
+        try {
+            print_debug();
+        } catch (ControlError controlError) {
+            tractar_error(controlError);
+        }
     }
 
     public static void gestionar_arestes() {
@@ -335,40 +389,11 @@ public class Main {
     }
 
     public static void inicializar_grafo() {
-        double[][] data = {{1,0,0},{0,1,0}};
-        Matriu m = new Matriu();
-        m.set_data(data);
-
-        ArrayList<Node> paper = new ArrayList<>();
-        paper.add(new Node(0, "Papeles1", Node.TipusNode.PAPER));
-        paper.add(new Node(1, "Papeles2", Node.TipusNode.PAPER));
-
-        ArrayList<Node> autor = new ArrayList<>();
-        autor.add(new Node(0, "Autor1", Node.TipusNode.AUTOR));
-        autor.add(new Node(1, "Autor2", Node.TipusNode.AUTOR));
-        autor.add(new Node(2, "Autor3", Node.TipusNode.AUTOR));
-
-
-        ArrayList<Node> terme = new ArrayList<>();
-        terme.add(new Node(0, "Term1", Node.TipusNode.TERME));
-        terme.add(new Node(1, "Term2", Node.TipusNode.TERME));
-        terme.add(new Node(2, "Term3", Node.TipusNode.TERME));
-
-        ArrayList<Node> conferencia = new ArrayList<>();
-        conferencia.add(new Node(0, "Conf1", Node.TipusNode.CONFERENCIA));
-        conferencia.add(new Node(1, "Conf2", Node.TipusNode.CONFERENCIA));
-        conferencia.add(new Node(2, "Conf3", Node.TipusNode.CONFERENCIA));
-
-        controladorPresentacio.controladorDomini.graf.set_paper_autor(data);
-        controladorPresentacio.controladorDomini.graf.set_paper_terme(data);
-        controladorPresentacio.controladorDomini.graf.set_paper_conferencia(data);
-        controladorPresentacio.controladorDomini.graf.set_paper(paper);
-        controladorPresentacio.controladorDomini.graf.set_autor(autor);
-        controladorPresentacio.controladorDomini.graf.set_conferencia(conferencia);
-        controladorPresentacio.controladorDomini.graf.set_terme(terme);
-
-
-        print_debug();
+        try {
+            print_debug();
+        } catch (ControlError controlError) {
+            tractar_error(controlError);
+        }
         System.out.println();
         System.out.println();
     }
@@ -376,6 +401,9 @@ public class Main {
     public static void main(String[] args) {
         controladorPresentacio = new ControladorPresentacio();
 
+        MatriuDriver md = new MatriuDriver();
+        md.run();
+/*
         inicializar_grafo();
         int opcio = menu();
         while (opcio != 0) {
@@ -399,7 +427,7 @@ public class Main {
                     break;
             }
             opcio = menu();
-        }
+        }*/
 
         /*
         controladorPresentacio.afegir_node(Node.TipusNode.AUTOR, "JOHN");
