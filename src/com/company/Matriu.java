@@ -8,7 +8,7 @@ public class Matriu {
     private double[][] data;
 
     // Pre:	 fila >= 1; columna >= 1.
-    // Post: Crea una nova instancia d'una matriu inicialitzada amb les dimensions fila x columna. Tots els valors son 0.
+    // Post: Crea una nova instància d'una matriu inicialitzada amb les dimensions fila x columna. Tots els valors son 0.
     // Cost: O(n²).
     public Matriu(int fila, int columna) {
         this.data = new double[fila][columna];
@@ -22,7 +22,7 @@ public class Matriu {
     }
 
     // Pre:  Cert.
-    // Post: La matriu implicita conté una copia de les dades pasades per paràmetre.
+    // Post: La matriu implícita conté una copia de les dades pasades per paràmetre.
     // Cost: O(n^2).
     public void set_data(double[][] data) {
         this.data = new double[data.length][data[0].length];
@@ -72,7 +72,7 @@ public class Matriu {
         return  this.data[0].length;
     }
 
-    // Pre:  0 <= fila < Matriu.fila
+    // Pre:  0 <= fila < Matriu.fila.
     // Post: Retorna una Matriu C coma resultat de obtenir la fila i-èssima de la matriu implícita.
     // Cost: O(n²).
     public Matriu get_fila_iessima(int fila) {
@@ -81,7 +81,7 @@ public class Matriu {
         return m;
     }
 
-    // Pre:  0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna
+    // Pre:  0 <= fila < Matriu.fila; 0 <= columna < Matriu.columna.
     // Post: Retorna el valor en la fila i columna pasades per paràmetre de la matriu implicita.
     // Cost: O(1).
     public double get_valor(int fila, int columna) {
@@ -89,7 +89,7 @@ public class Matriu {
     }
 
 
-    // Pre:  0 <= columna < Matriu.columna
+    // Pre:  0 <= columna < Matriu.columna.
     // Post: Retorna una Matriu C coma resultat de obtenir la columna i-èssima de la matriu implícita.
     // Cost: O(n²).
     public Matriu get_columna_iessima(int columna) {
@@ -153,7 +153,7 @@ public class Matriu {
         this.data = novaData;
     }
 
-    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència com B, tant A com B tenen que tenir
+    // Pre:  Anomenem la matriu implícita com A i la matriu pasada per referència com B, tant A com B tenen que tenir
     //       mateixes dimensions. B != NULL.
     // Post: Retorna una matriu C com a resultat de la suma de la matriu implícita (A) amb la matriu B. C = A + B.
     // Cost: O(n²).
@@ -167,7 +167,7 @@ public class Matriu {
         return c;
     }
 
-    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència com B, tant A com B tenen que tenir
+    // Pre:  Anomenem la matriu implícita com A i la matriu pasada per referència com B, tant A com B tenen que tenir
     //       mateixes dimensions. B != NULL.
     // Post: Retorna una matriu C com a resultat de la resta de la matriu implícita (A) amb la matriu B. C = A - B.
     // Cost: O(n²).
@@ -182,7 +182,7 @@ public class Matriu {
         return c;
     }
 
-    // Pre:  Anomanem la matriu implícita com A i la matriu pasada per referència com B, B != NULL. El nombre files de
+    // Pre:  Anomenem la matriu implícita com A i la matriu pasada per referència com B, B != NULL. El nombre files de
     //		 la Matriu A té que ser igual al nombre de columnes de la Matriu B.
     // Post: Retorna una matriu C com a resultat de multiplicar la matriu implícita (A) amb la matriu B. C = A * B.
     // Cost: O(n³).
