@@ -10,10 +10,6 @@ public class ControladorDomini {
     public Graf graf;
     private ControladorCami controladorCami;
 
-    private String codificar_node(int idNode, String nomNode) {
-        return (idNode + "|" + nomNode);
-    }
-
     private String codificar_cami(Cami c) {
         return (c.get_cami() + "|" + c.get_descripcio());
     }

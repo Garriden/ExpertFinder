@@ -50,13 +50,13 @@ public class Graf {
         this.terme = terme;
     }
 
-    /*
-    Errors:
-    -1 = arg nul
-    -2 = el node que es vol afegir ja existeix.
-    -3 = el tipus node no existeix
-     */
 
+    // Pre:  Cert
+    // Post: Afegeix el node desitjat al final del vector corresponent i amplia les columnes i/o files la matriu corresponent
+    // Errors:
+    //      -1 = argument null
+    //      -2 = el node que es vol afegir ja existeix.
+    //      -3 = el tipus node no existeix
     public int afegir_node(Node.TipusNode tipusNode, String nomNode) {
         if (tipusNode == null || nomNode == null) return -1;
         switch (tipusNode) {
@@ -96,17 +96,14 @@ public class Graf {
         return -2;
     }
 
+    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Post: Afegeix un '1' en la posició corresponent de la matriu paper_(TipusNodeDestí)
     // Errors:
-    //
-    /*
-    -1 = arg null;
-    -2 = id negatiu
-    -3 = id >= tamany del vector
-    -4 = tipus node incorrecte
-    -5 = nodeOrigen no es de tipus paper
-     */
-
-    // Node Origen sempre es paper, perque les matrius son Paper x [Autor,Conferencia,Terme]
+    //      -1 = argument null
+    //      -2 = id negatiu
+    //      -3 = id >= tamany del vector
+    //      -4 = tipus node incorrecte
+    //      -5 = nodeOrigen no es de tipus paper
     public int afegir_aresta(Node nodeOrigen, Node nodeDesti) {
         if (nodeOrigen == null || nodeDesti == null) return -1;
         if (nodeOrigen.get_id() < 0 || nodeDesti.get_id() < 0) return -2;
@@ -130,13 +127,12 @@ public class Graf {
         return 0;
     }
 
+    //Pre:  Cert
+    //Post: Elimina el node desitjat al final de l'Array corresponent i treu les columnes i/o files la matriu corresponent.
     // Errors:
-    /*
-    -1 = arg null;
-    -2 = no hay ningun nodo con esa id ni tipo.
-    -3 = tipus node incorrecte
-
-     */
+    //      -1 = argument null;
+    //      -2 = no hay ningun nodo con esa id ni tipo.
+    //      -3 = tipus node incorrecte
     public int eliminar_node(Node node) {
         if (node == null) return -1;
         switch (node.get_tipus_node()) {
@@ -182,13 +178,14 @@ public class Graf {
         return -3;
     }
 
+
+    // Pre: Cert
+    // Post: Canvia el nom del node indicat
     // Errors:
-    /*
-    -1 = arg null;
-    -2 = id negatiu
-    -3 = id >= tamany del vector
-    -4 = tipus node incorrecte
-     */
+    //      -1 = argument null;
+    //      -2 = id negatiu
+    //      -3 = id >= tamany del vector
+    //      -4 = tipus node incorrecte
     public int actualizar_node(Node node) {
         if (node == null) return -1;
         if (node.get_id() < 0) return -2;
@@ -215,16 +212,14 @@ public class Graf {
         return 0;
     }
 
-    // PRE: Node origen siempre tiene que ser paper
+    //Pre:  Node Origen sempre serà paper, les matrius son Paper x [Autor,Conferencia,Terme]
+    //Post: Afegeix un '0' en la posició corresponent de la matriu paper_(TipusNodeDestí)
     // Errors:
-    //
-    /*
-    -1 = arg null;
-    -2 = id negatiu
-    -3 = id >= tamany del vector
-    -4 = tipus node incorrecte
-    -5 = nodeOrigen no es de tipus paper
-     */
+    //      -1 = argument null;
+    //      -2 = id negatiu
+    //      -3 = id >= tamany del vector
+    //      -4 = tipus node incorrecte
+    //      -5 = nodeOrigen no es de tipus paper
     public int eliminar_aresta(Node nodeOrigen, Node nodeDesti) {
         if (nodeOrigen == null || nodeDesti == null) return -1;
         if (nodeOrigen.get_id() < 0 || nodeDesti.get_id() < 0) return -2;
@@ -249,6 +244,8 @@ public class Graf {
         return 0;
     }
 
+    //Pre: Cert
+    //Post: Retorna el node indicat
     public Node get_node(int i, Node.TipusNode tipus)
     {
         switch(tipus) {
@@ -265,30 +262,44 @@ public class Graf {
         }
     }
 
+    //Pre: Cert
+    //Post: Retorna la matriu paperAutor
     public Matriu get_paper_autor() {
         return this.paperAutor;
     }
 
+    //Pre: Cert
+    //Post: Retorna la matriu paperConferencia
     public Matriu get_paper_conferencia() {
         return this.paperConferencia;
     }
 
+    //Pre: Cert
+    //Post: Retorna la matriu paperTerme
     public Matriu get_paper_terme() {
         return this.paperTerme;
     }
 
+    //Pre: Cert
+    //Post: Retorna la ArrayList get_paper
     public ArrayList<Node> get_paper() {
         return this.paper;
     }
 
+    //Pre: Cert
+    //Post: Retorna la ArrayList get_conferencia
     public ArrayList<Node> get_conferencia() {
         return this.conferencia;
     }
 
+    //Pre: Cert
+    //Post: Retorna la ArrayList get_autor
     public ArrayList<Node> get_autor() {
         return this.autor;
     }
 
+    //Pre: Cert
+    //Post: Retorna la ArrayList get_terme
     public ArrayList<Node> get_terme() {
         return this.terme;
     }
